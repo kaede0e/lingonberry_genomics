@@ -12,11 +12,11 @@ Genome assembly available for:
 | V. macrocarpon Stevens    | chr | 2x | yes |
 | V. macrocarpon Ben Lear | chr | 2x | yes |
 | V. oxycoccos | scaf | 2x | yes |
-| V.corymbosum Draper | chr | 4x | yes |
-| V.darrowii | chr | 2x | yes |
-| V.caesariense | scaf | 2x | yes |
-| V.myrtillus | chr | 2x | yes |
-The pangenome data availability is questionable; it is still restricted access due to pre-publication. 
+| V. corymbosum Draper | chr | 4x | yes |
+| V. darrowii | chr | 2x | yes |
+| V. caesariense | scaf | 2x | yes |
+| V. myrtillus | chr | 2x | yes |
+| The pangenome data availability is questionable; it is still restricted access due to pre-publication. | scaf | var. | yes
 
 ### Phylogenetic tree construction 
 How is a tree constructed? \
