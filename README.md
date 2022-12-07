@@ -4,7 +4,7 @@
 Repository to deposit codes and dependent softwares/packages pipeline for my lingonberry project.
 
 This repository consists of three pipelines: 
-1. Genome assembly (Vaccinium vitis-idaea ssp. vitis-idaea and ssp. minus)
+1. [Genome assembly](https://github.com/kaede0e/lingonberry_genomics/blob/main/1_genome_assembly_pipeline.md#genome-assembly-pipeline) (Vaccinium vitis-idaea ssp. vitis-idaea and ssp. minus)
 2. Demographic history of lingonberry subspecies
 3. Vaccinium phylogenetics
 
