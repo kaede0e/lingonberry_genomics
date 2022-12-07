@@ -1,9 +1,9 @@
 ## Genome assembly pipeline 
 
 ### sequence ###
-Sequence raw reads (Nanopore MinION)
-Basecall with super accurate mode (Guppy)
-Duplex-basecall (Guppy_duplex)
+Sequence raw reads (Nanopore MinION) \
+Basecall with super accurate mode (Guppy) \
+Duplex-basecall (Guppy_duplex) \
 Combine the duplexed reads with sup singleplex reads --> combined_all_reads.fa
 
 ### de novo assenble ###
