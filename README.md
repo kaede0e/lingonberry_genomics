@@ -1,4 +1,4 @@
-# lingonberry_genomics
+# lingonberry genomics
 Repository to deposit codes and dependent softwares/packages pipeline for my lingonberry project.
 
 This repository consists of three pipelines: 
