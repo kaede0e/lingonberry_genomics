@@ -2,11 +2,18 @@
 This aims to compare lingonberry (V. vitis-idaea) with other Vaccinium species and ultimately re-define their phylogenetic relationships using whole-genome assembly. 
 Questions to address: 
 * How are they related? What is the correct phylogeny? genome assembly available for: 
-*   chromosome resolved: V. macrocarpon Stevens (2x), V. marcocarpon Ben Lear, (2x), V. corymbosum cv. Draper (4x), V. darrowii (2x), V. myrtillus (2x)
-*   draft level: V. oxycoccos (2x), V. microcarpum (2x), V. caesariense (2x), V. corymbosum many varieties, V. macrocarpon many varieties (pangenome project), 
-* When did lingonberry diverge from teh closest relative? 
-* Are there any genes undergoing selection or adaptation particularly for lingonberry? 
-*   some known traits like cold adapted, nutritional requirement, berry colors, etc.
+| Species | Assembly level  | ploidy | Annotated |
+| :------------------- |:-----:| :------------------:| :-------------: |
+| V. macrocarpon Stevens    | chr | 2x | yes |
+| V. macrocarpon Ben Lear | chr | 2x | yes |
+| V. oxycoccos | scaf | 2x | yes |
+| V.corymbosum Draper | chr | 4x | yes |
+| V.darrowii | chr | 2x | yes |
+| V.caesariense | scaf | 2x | yes |
+| V.myrtillus | chr | 2x | yes |
+The pangenome data availability is questionable; it is still restricted access due to pre-publication. 
+* When did lingonberry diverge from the closest relative? 
+* Are there any genes undergoing selection or adaptation particularly for lingonberry? some known traits like cold adapted, nutritional requirement, berry colors, etc.
 
 ### Phylogenetic tree construction 
 How is a tree constructed? \
