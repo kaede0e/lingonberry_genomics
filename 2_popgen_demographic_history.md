@@ -1,4 +1,4 @@
-## Population structure and demographic history of lingonberry subspecies 
+## Population genetics and demographic history of lingonberry subspecies 
 Questions to address:
 * How do the two subspecies genomes differ? Are they different enough to be considered subspecies? (ssp. minus vs vitis-idaea) 
 * How much are their genomes differentiated? 
