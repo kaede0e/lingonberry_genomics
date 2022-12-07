@@ -1,7 +1,12 @@
 ## Vaccinium phylogenetics 
 This aims to compare lingonberry (V. vitis-idaea) with other Vaccinium species and ultimately re-define their phylogenetic relationships using whole-genome assembly. 
 Questions to address: 
-* How are they related? What is the correct phylogeny? genome assembly available for: 
+* How are they related? What is the correct phylogeny? 
+* When did lingonberry diverge from the closest relative? 
+* Are there any genes undergoing selection or adaptation particularly for lingonberry? some known traits like cold adapted, nutritional requirement, berry colors, etc.
+
+Genome assembly available for: 
+
 | Species | Assembly level  | ploidy | Annotated |
 | :------------------- |:-----:| :------------------:| :-------------: |
 | V. macrocarpon Stevens    | chr | 2x | yes |
@@ -12,8 +17,6 @@ Questions to address:
 | V.caesariense | scaf | 2x | yes |
 | V.myrtillus | chr | 2x | yes |
 The pangenome data availability is questionable; it is still restricted access due to pre-publication. 
-* When did lingonberry diverge from the closest relative? 
-* Are there any genes undergoing selection or adaptation particularly for lingonberry? some known traits like cold adapted, nutritional requirement, berry colors, etc.
 
 ### Phylogenetic tree construction 
 How is a tree constructed? \
