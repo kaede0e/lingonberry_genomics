@@ -13,6 +13,8 @@ What is the best two-genome comparison here? What questions am I addressing?
 ### population models ### 
 Useful link that lists all possible software packages here: https://www.duckdna.org/softwares/
 
+Heterogeneity estimation using Illumina reads mapped to genome ([BWA_mem](https://github.com/lh3/bwa)) \
+SNP calling within the single genome can be performed using [GATK](https://github.com/broadinstitute/gatk/blob/master/README.md), nucleotide diversity can be calculated using VCFtools \
 Use multiple phased genome sequence simultaneously, by separating into maternal and paternal haplotypes ([MSMC](http://www.github.com/stschiff/msmc-tools)) \
 This computes the most probable ancestral recombination histories based on genealogical trees. \
 It approximates coalescence rates using the Hidden Markov Model (HMM). 
