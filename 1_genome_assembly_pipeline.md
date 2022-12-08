@@ -22,8 +22,8 @@ Gene annotation on the assembly using my RNA seq ...?
 2. Align transcript to genome (Hisat or STAR)
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
-1. Download available data (paired Illumina reads) --> SRA__.fastq
-2. Quality check public libraries (fastqc) 
+1. Download available data (paired Illumina reads) --> SRA__.fastq 
+2. Quality check public libraries (fastqc) --> all good to use. 
 3. Assemble transcript from multiple individuals (Stringtie)
 4. Align transcript to genome (Hisat or STAR, make sure above 80% alignment rates)
 
