@@ -16,6 +16,7 @@ Genome assembly available for:
 | V. darrowii | chr | 2x | yes |
 | V. caesariense | scaf | 2x | yes |
 | V. myrtillus | chr | 2x | yes |
+| V. bacteatum | chr | 2x | yes |
 | The pangenome data availability is questionable; it is still restricted access due to pre-publication. | scaf | var. | yes
 
 ### Phylogenetic tree construction 
