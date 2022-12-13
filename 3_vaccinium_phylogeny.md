@@ -23,7 +23,7 @@ Genome assembly available for:
 How is a tree constructed? \
 There is genetic tree and species tree, I'm interested in doing both? \
 Phylogeny of species in the same genus (relatively closely related species) seems to be built from: 
-* Protein sequences (Diaz-Garcia, et al. 2021 used 25 phylogenetically close species to Vmac and identified orthologs with [Orthofinder](https://github.com/davidemms/OrthoFinder); Cui et al. 2022 used 10 related species proteins and did pretty much the same thing)
+* Protein sequences (Diaz-Garcia, et al. 2021 used 25 phylogenetically close species to Vmac and identified orthologs with [Orthofinder](https://github.com/davidemms/OrthoFinder); Cui et al. 2022 used 10 related species proteins and did pretty much the same thing except that they used only single-copy genes in generating tree using MAFFT for MSA and IQTREE for tree construction)
 * Plastid genome sequence, like those encoding chloroplast and mitochondria (Polashock et al. 2014) 
 * A single selected gene of interest (Wu et al. 2021 was interested in MYB genes evolution so they used BLAST to identify orthologs, aligned with MUSCLE, and constructed tree with PhyML)
 * 
