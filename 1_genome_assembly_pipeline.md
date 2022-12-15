@@ -18,8 +18,8 @@ Clean haplotigs with Nanopore long-reads (map raw reads onto draft genome and ca
 
 ### annotate ###
 Gene annotation on the assembly using my RNA seq ...?
-1. Align RNA seq = cDNA library seq data, to the genome (Hisat or STAR)
-2. Run transcript assembler (Stringtie) --> .gtf which is basically .gff
+1. Align RNA seq = cDNA library seq data, to the genome ([Hisat](http://daehwankimlab.github.io/hisat2/manual/) or STAR)
+2. Run transcript assembler ([Stringtie](https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual)) --> .gtf which is basically .gff
 3. 
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
