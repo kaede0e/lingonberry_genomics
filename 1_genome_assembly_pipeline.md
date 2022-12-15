@@ -27,5 +27,5 @@ Gene annotation on the assembly using published data (SRP110973; berry developme
 2. Quality check public libraries (fastqc) --> all good to use. 
 3. Align transcript to genome (Hisat or STAR, make sure above 80% alignment rates) --> 95.5% alignment rate on Hisat2! 
 4. Assemble transcript from multiple individuals (Stringtie) --> .gtf - this annotation contains "transcript" and "exon" 
-5. Gene prediction: Cui et al. 2022 used [TransDecoder](https://github.com/TransDecoder/TransDecoder) and [GeneMark-ES](http://exon.gatech.edu/GeneMark/gmes_instructions.html)
+5. Gene prediction: Cui et al. 2022 used [TransDecoder](https://github.com/TransDecoder/TransDecoder) and [GeneMark-ET](http://exon.gatech.edu/GeneMark/gmes_instructions.html)
 
