@@ -9,7 +9,7 @@ Combine the duplexed reads with sup singleplex reads --> combined_all_reads.fa
 ### de novo assenble ###
 Assemble draft genome (smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
-Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki)) --> polished_asm.fa
+Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) --> polished_asm.fa
 
 ### assemble using reference ###
 Scaffold draft genome with cranberry reference genome ([RagTag](https://github.com/malonge/RagTag/wiki)) \
@@ -18,9 +18,11 @@ Clean haplotigs with Nanopore long-reads (map raw reads onto draft genome and ca
 
 ### annotate ###
 Gene annotation on the assembly using my RNA seq ...?
-1. Align RNA seq = cDNA library seq data, to the genome ([Hisat](http://daehwankimlab.github.io/hisat2/manual/) or STAR)
-2. Run transcript assembler ([Stringtie](https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual)) --> .gtf which is basically .gff
-3. 
+1. Adapter trimming of raw Illumina outputs. 
+2. Run fastqc to make sure the data quality is good for downstream analysis - what do I do if the quality of reads are bad? 
+3. Align RNA seq = cDNA library seq data, to the genome ([Hisat](http://daehwankimlab.github.io/hisat2/manual/) or STAR)
+4. Run transcript assembler ([Stringtie](https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual)) --> .gtf which is basically .gff
+5. 
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
 1. Download available data (paired Illumina reads) --> SRA__.fastq 
