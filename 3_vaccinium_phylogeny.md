@@ -17,7 +17,7 @@ Genome assembly available for:
 | V. caesariense | scaf | 2x | yes |
 | V. myrtillus | chr | 2x | yes |
 | V. bacteatum | chr | 2x | yes |
-| The pangenome data availability is questionable; it is still restricted access due to pre-publication. | scaf | var. | yes
+| The pangenome data availability is questionable; it is still restricted access due to pre-publication. | scaf | var. | yes |
 
 ### Phylogenetic tree construction 
 How is a tree constructed? \
@@ -26,7 +26,7 @@ Phylogeny of species in the same genus (relatively closely related species) seem
 * Protein sequences (Diaz-Garcia, et al. 2021 used 25 phylogenetically close species to Vmac and identified orthologs with [Orthofinder](https://github.com/davidemms/OrthoFinder); Cui et al. 2022 used 10 related species proteins and did pretty much the same thing except that they used only single-copy genes in generating tree using MAFFT for MSA and IQTREE for tree construction)
 * Plastid genome sequence, like those encoding chloroplast and mitochondria (Polashock et al. 2014) 
 * A single selected gene of interest (Wu et al. 2021 was interested in MYB genes evolution so they used BLAST to identify orthologs, aligned with MUSCLE, and constructed tree with PhyML)
-* 
+* To date the evolutionary tree, you need fossiil calibration from one or two Vaccinium ancestors. 
 
 Multiple sequence comparisons ([MUSCLE](https://drive5.com/muscle5/)) seems good, superior to Clustral and MAFFT for multiple sequence alignment \
 Alternativey, phylogenetic estimation usingn maximum likelihood ([PHYML](https://github.com/stephaneguindon/phyml)) seems to produce a robust tree, but might need a fossil calibration which I don't have. \
