@@ -31,6 +31,8 @@ Gene annotation on the assembly using published data (SRP110973; berry developme
 4. Assemble transcript from multiple individuals (Stringtie) --> .gtf - this annotation contains "transcript" and "exon" 
 5. Gene prediction: Cui et al. 2022 used [TransDecoder](https://github.com/TransDecoder/TransDecoder) and [GeneMark-ET](http://exon.gatech.edu/GeneMark/gmes_instructions.html)
 
+Alternative option is [BRAKER pipeline](https://github.com/Gaius-Augustus/BRAKER) but the dependencies are hard to configure... still working on it in cedar. 
+
 Useful protein search resources (used in corporation with the BlastP search: [uniProt](https://www.uniprot.org/uniprotkb?facets=model_organism%3A3702&query=arabidopsis), it has Arabidopsis 136,000+ genes and 1,200+ Vaccinium genes). \
 I downloaded them and created the blastdb. 
 
