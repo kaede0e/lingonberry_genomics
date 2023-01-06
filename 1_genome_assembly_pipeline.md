@@ -6,6 +6,11 @@ Basecall with super accurate mode (Guppy) \
 Duplex-basecall (Guppy_duplex) \
 Combine the duplexed reads with sup singleplex reads --> combined_all_reads.fa
 
+Sequence raw reads (Illumina Novaseq for both DNA & RNA) \
+Data download from GenomeBC \
+Clean reads \
+Quality check the reads (fastqc)
+
 ### de novo assenble ###
 Assemble draft genome (smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
@@ -14,7 +19,8 @@ Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.c
 ### assemble using reference ###
 Scaffold draft genome with cranberry reference genome ([RagTag](https://github.com/malonge/RagTag/wiki)) \
 Clean haplotigs with Illumina short-reads ([purge_haplotigs](https://bitbucket.org/mroachawri/purge_haplotigs/src/master/)), or \
-Clean haplotigs with Nanopore long-reads (map raw reads onto draft genome and calculate freq kmer [Winnowmap](https://github.com/marbl/Winnowmap), then purge haplotigs based on read depth [purge_dups](https://github.com/dfguan/purge_dups))
+Clean haplotigs with Nanopore long-reads (map raw reads onto draft genome and calculate freq kmer [Winnowmap](https://github.com/marbl/Winnowmap), then purge haplotigs based on read depth [purge_dups](https://github.com/dfguan/purge_dups)), or do both (purge_haplotigs and purge_dups curated better) \
+Remove any contaminants or organeller sequences from assembly at this stage. 
 
 ### annotate ###
 Gene annotation on the assembly using my RNA seq ...?
