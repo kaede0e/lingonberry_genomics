@@ -13,14 +13,15 @@ Quality check the reads (fastqc)
 
 ### de novo assenble ###
 Assemble draft genome (smartdenovo) --> asm.fa \
+Correct reads and assemble draft genome (canu_smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
 Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) --> polished_asm.fa
 
 ### assemble using reference ###
-Scaffold draft genome with cranberry reference genome ([RagTag](https://github.com/malonge/RagTag/wiki)) \
 Clean haplotigs with Illumina short-reads ([purge_haplotigs](https://bitbucket.org/mroachawri/purge_haplotigs/src/master/)), or \
 Clean haplotigs with Nanopore long-reads (map raw reads onto draft genome and calculate freq kmer [Winnowmap](https://github.com/marbl/Winnowmap), then purge haplotigs based on read depth [purge_dups](https://github.com/dfguan/purge_dups)), or do both (purge_haplotigs and purge_dups curated better) \
-Remove any contaminants or organeller sequences from assembly at this stage. 
+Remove any contaminants or organeller sequences from assembly at this stage. \
+Scaffold draft genome with cranberry reference genome ([RagTag](https://github.com/malonge/RagTag/wiki))
 
 ### annotate ###
 Gene annotation on the assembly using my RNA seq ...?
