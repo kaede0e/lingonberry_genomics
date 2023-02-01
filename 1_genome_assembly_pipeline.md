@@ -36,7 +36,7 @@ Gene annotation on the assembly using published data (SRP110973; berry developme
 2. Quality check public libraries (fastqc) --> all good to use. 
 3. Align transcript to genome (Hisat or STAR, make sure above 80% alignment rates) --> 95.5% alignment rate on Hisat2! 
 4. Assemble transcript from multiple individuals (Stringtie) --> .gtf - this annotation contains "transcript" and "exon" 
-5. Gene prediction: Cui et al. 2022 used [TransDecoder](https://github.com/TransDecoder/TransDecoder), [Adam's codes](https://github.com/harvardinformatics/GenomeAnnotation/tree/reorg/paper/slurm_scripts/TransDecoder) and [GeneMark-ET](http://exon.gatech.edu/GeneMark/gmes_instructions.html) --> .gff3 mapped on genome
+5. Gene prediction: Cui et al. 2022 used [TransDecoder](https://github.com/TransDecoder/TransDecoder), Adam recommends this too [Adam's codes](https://github.com/harvardinformatics/GenomeAnnotation/tree/reorg/paper/slurm_scripts/TransDecoder) and [GeneMark-ET](http://exon.gatech.edu/GeneMark/gmes_instructions.html) --> .gff3 mapped on genome
 6. Clean .gff3 annotation file for downstream analysis. 
 7. Put your genome and the final annotation to a new directory for all the downstream analyses. 
 8. Use orthologs to find functionalities of annotated genes [eggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper/tree/2.1.9)
