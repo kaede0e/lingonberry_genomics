@@ -8,15 +8,13 @@ Combine the duplexed reads with sup singleplex reads --> combined_all_reads.fa
 
 Sequence raw reads (Illumina Novaseq for both DNA & RNA) \
 Data download from GenomeBC \
-Clean reads \
-Quality check the reads (fastqc)
+Cean reads: Trim adapters and unpaired reads from Illumina short-read raw outputs ([Trimmomatic](https://github.com/usadellab/Trimmomatic)) \
+Quality check with fastqc
 
 ### de novo assenble ###
 Assemble draft genome (smartdenovo) --> asm.fa \
 Correct reads and assemble draft genome (canu_smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
-Trim adapters and unpaired reads from Illumina short-read raw outputs ([Trimmomatic](https://github.com/usadellab/Trimmomatic)) \
-Run fastqc for quality check of reads (pass) \
 Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) --> polished_asm.fa
 
 ### assemble using reference ###
