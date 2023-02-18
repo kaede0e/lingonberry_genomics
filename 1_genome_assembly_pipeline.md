@@ -15,6 +15,8 @@ Quality check the reads (fastqc)
 Assemble draft genome (smartdenovo) --> asm.fa \
 Correct reads and assemble draft genome (canu_smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
+Trim adapters and unpaired reads from Illumina short-read raw outputs ([Trimmomatic](https://github.com/usadellab/Trimmomatic)) \
+Run fastqc for quality check of reads (pass) \
 Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) --> polished_asm.fa
 
 ### assemble using reference ###
