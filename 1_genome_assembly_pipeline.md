@@ -15,7 +15,7 @@ Quality check with fastqc
 Assemble draft genome (smartdenovo) --> asm.fa \
 Correct reads and assemble draft genome (canu_smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
-Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) or [pPOLCA](https://github.com/alekseyzimin/masurca) whcih is under MaSURCA assembly toolkit, supposed to be better for homopolymers --> polished_asm.fa
+Polish the draft assembly with Illumina short-reads x3 ([Pilon](https://github.com/broadinstitute/pilon/wiki) or [ntEdit](https://github.com/bcgsc/ntEdit)) or [POLCA](https://github.com/alekseyzimin/masurca) whcih is under MaSURCA assembly toolkit, supposed to be better for homopolymers --> polished_asm.fa
 
 ### assemble using reference ###
 Clean haplotigs with Illumina short-reads or Nanopore long-reads ([purge_haplotigs](https://bitbucket.org/mroachawri/purge_haplotigs/src/master/); apparently it works best with the reads that were used to assemble the draft assembly), or \
