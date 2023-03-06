@@ -21,7 +21,7 @@ This computes the most probable ancestral recombination histories based on genea
 It approximates coalescence rates using the Hidden Markov Model (HMM). 
 
 Use pairwise Markovian coalescent ([PSMC](https://github.com/lh3/psmc)) \
-This computes 
+This computes population models similar to MSMC, but computes based on pairwise coalescence. Instead of multiple individuals it can only perform one to one at a time.
 
 ### signals of natural selection? ### 
 This is kind of ambitious to do with only two genomes sequencing data... but here is idea: 
