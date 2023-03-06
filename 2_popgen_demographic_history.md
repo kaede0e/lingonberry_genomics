@@ -15,6 +15,7 @@ Useful link that lists all possible software packages here: https://www.duckdna.
 
 Heterogeneity estimation using Illumina reads mapped to genome ([BWA_mem](https://github.com/lh3/bwa)) \
 SNP calling within the single genome can be performed using [GATK](https://github.com/broadinstitute/gatk/blob/master/README.md), nucleotide diversity can be calculated using VCFtools \
+The genome wide mask file should be created based on repetitive reads using [GenMap](https://github.com/cpockrandt/genmap) \
 Use multiple phased genome sequence simultaneously, by separating into maternal and paternal haplotypes ([MSMC](http://www.github.com/stschiff/msmc-tools)) \
 This computes the most probable ancestral recombination histories based on genealogical trees. \
 It approximates coalescence rates using the Hidden Markov Model (HMM). 
