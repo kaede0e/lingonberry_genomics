@@ -26,11 +26,14 @@ Scaffold draft genome with cranberry reference genome ([RagTag](https://github.c
 
 ### annotate ###
 Gene annotation on the assembly using my RNA seq ...?
-1. Adapter trimming of raw Illumina outputs. 
+1. Adapter trimming of raw Illumina outputs with Trimmomatic. 
 2. Run fastqc to make sure the data quality is good for downstream analysis - what do I do if the quality of reads are bad? 
-3. Align RNA seq = cDNA library seq data, to the genome ([Hisat](http://daehwankimlab.github.io/hisat2/manual/) or STAR)
+3. Align RNA seq = cDNA library seq data, to the genome ([Hisat](http://daehwankimlab.github.io/hisat2/manual/)) --> combined alignment rate of 96.07%
 4. Run transcript assembler ([Stringtie](https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual)) --> .gtf which is basically .gff
-5. 
+5. Gene prediction by TransDecoder
+6. Convert to genomic coordinates. --> .gff3 mapped on to genome basically annotation file!
+7. Clean .gff3 column format for downstream analysis 
+8. Use orthologs to find functionalities of annotated genes in eggNOG-Mapper
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
 1. Download available data (paired Illumina reads) --> SRA__.fastq 
