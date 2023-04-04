@@ -35,6 +35,13 @@ Multiple sequence comparisons ([MUSCLE](https://drive5.com/muscle5/)) seems good
 Alternativey, phylogenetic estimation usingn maximum likelihood ([PHYML](https://github.com/stephaneguindon/phyml)) seems to produce a robust tree, but might need a fossil calibration which I don't have. \
 Once alignments data is compiled, [IQTREE](http://www.iqtree.org/doc/Concordance-Factor) should be good to make a phylogenetic tree. 
 
+### What can I do with the Orthofinder results? 
+Species_Tree/SpeciesTree_rooted.txt provides the overall species tree inferred from the whole sets of gene tree. \
+The STAG support value (at the node, looks like boostrap value but is not) represents the proportion of gene trees that supports this node topology. It is cocnsidered more robust than the conventional bootstrap support values. \
+Gene_Trees/OG000XXXX_tree.txt provides individual gene tree for each orthogroup. \
+- If I can pick a gene I'm interested in, I should pull out the specific gene tree and see if the pattern matches the species tree, or supported by the earlier works. 
+If I search up in "Arabidopsis thaliana" "one2one" in the Eggnog_mapper output, I can get a rough sense of orthologous matches in model organisms, but not all genes are there in the Orthofinder output. I need to know which genes to search up. \
+
 ### gene evolution in Vaccinium species
 It would be interesting to investigate further into specific gene evolution within this genus; considering the diverse morphology and biochemical applications. \
 Transcripts and chemical properties are generally available for many Vaccinium berries. \
@@ -44,4 +51,9 @@ Why is there a discrepancy from previous knowledge (i.e., not clustering with cr
 * Maybe the preliminary dataset did not include bilberry in it so assumed it was a branch off from cranberry? 
 * Maybe the preliminary studies did not thoroughly investigate all the genes? 
 * Maybe gene duplication events for those targeted genes before had topologies different from the overall species tree? 
+
+
+### Flavonoid biosynthesis pathway 
+Goal here is to look for evolutionary questions regarding flavonoid biosynthesis in Vaccinium. How does lingonberry develop the red pigment colouration that is quite divergent from blueberry and bilberry? 
+
 
