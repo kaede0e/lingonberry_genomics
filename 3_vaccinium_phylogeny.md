@@ -12,12 +12,14 @@ Genome assembly available for:
 | V. macrocarpon Stevens    | chr | 2x | yes |
 | V. macrocarpon Ben Lear | chr | 2x | yes |
 | V. oxycoccos | scaf | 2x | yes |
+| V. microcarpum | scaf | 2x | yes |
 | V. corymbosum Draper | chr | 4x | yes |
 | V. darrowii | chr | 2x | yes |
 | V. caesariense | scaf | 2x | yes |
 | V. myrtillus | chr | 2x | yes |
 | V. bacteatum | chr | 2x | yes |
 | The pangenome data availability is questionable; it is still restricted access due to pre-publication. | scaf | var. | yes |
+V. bacteatum genome is published, but the annotation and protein seq data is not available for download. 
 
 ### Phylogenetic tree construction 
 How is a tree constructed? \
@@ -36,4 +38,10 @@ Once alignments data is compiled, [IQTREE](http://www.iqtree.org/doc/Concordance
 ### gene evolution in Vaccinium species
 It would be interesting to investigate further into specific gene evolution within this genus; considering the diverse morphology and biochemical applications. \
 Transcripts and chemical properties are generally available for many Vaccinium berries. \
+
+How can I find a support and good explanations for the seen species tree pattern? \
+Why is there a discrepancy from previous knowledge (i.e., not clustering with cranberry, but its closest relative is bilberry)? \
+* Maybe the preliminary dataset did not include bilberry in it so assumed it was a branch off from cranberry? 
+* Maybe the preliminary studies did not thoroughly investigate all the genes? 
+* Maybe gene duplication events for those targeted genes before had topologies different from the overall species tree? 
 
