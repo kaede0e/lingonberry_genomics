@@ -40,14 +40,14 @@ Species_Tree/SpeciesTree_rooted.txt provides the overall species tree inferred f
 The STAG support value (at the node, looks like boostrap value but is not) represents the proportion of gene trees that supports this node topology. It is cocnsidered more robust than the conventional bootstrap support values. \
 Gene_Trees/OG000XXXX_tree.txt provides individual gene tree for each orthogroup. \
 - If I can pick a gene I'm interested in, I should pull out the specific gene tree and see if the pattern matches the species tree, or supported by the earlier works. 
-If I search up in "Arabidopsis thaliana" "one2one" in the Eggnog_mapper output, I can get a rough sense of orthologous matches in model organisms, but not all genes are there in the Orthofinder output. I need to know which genes to search up. \
+If I search up in "Arabidopsis thaliana" "one2one" in the Eggnog_mapper output, I can get a rough sense of orthologous matches in model organisms, but not all genes are there in the Orthofinder output. I need to know which genes to search up.
 
 ### gene evolution in Vaccinium species
 It would be interesting to investigate further into specific gene evolution within this genus; considering the diverse morphology and biochemical applications. \
-Transcripts and chemical properties are generally available for many Vaccinium berries. \
+Transcripts and chemical properties are generally available for many Vaccinium berries. 
 
 How can I find a support and good explanations for the seen species tree pattern? \
-Why is there a discrepancy from previous knowledge (i.e., not clustering with cranberry, but its closest relative is bilberry)? \
+Why is there a discrepancy from previous knowledge (i.e., not clustering with cranberry, but its closest relative is bilberry)? 
 * Maybe the preliminary dataset did not include bilberry in it so assumed it was a branch off from cranberry? 
 * Maybe the preliminary studies did not thoroughly investigate all the genes? 
 * Maybe gene duplication events for those targeted genes before had topologies different from the overall species tree? 
