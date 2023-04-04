@@ -39,7 +39,7 @@ Once alignments data is compiled, [IQTREE](http://www.iqtree.org/doc/Concordance
 Species_Tree/SpeciesTree_rooted.txt provides the overall species tree inferred from the whole sets of gene tree. \
 The STAG support value (at the node, looks like boostrap value but is not) represents the proportion of gene trees that supports this node topology. It is cocnsidered more robust than the conventional bootstrap support values. \
 Gene_Trees/OG000XXXX_tree.txt provides individual gene tree for each orthogroup. \
-- If I can pick a gene I'm interested in, I should pull out the specific gene tree and see if the pattern matches the species tree, or supported by the earlier works. 
+If I can pick a gene I'm interested in, I should pull out the specific gene tree and see if the pattern matches the species tree, or supported by the earlier works. \
 If I search up in "Arabidopsis thaliana" "one2one" in the Eggnog_mapper output, I can get a rough sense of orthologous matches in model organisms, but not all genes are there in the Orthofinder output. I need to know which genes to search up.
 
 ### gene evolution in Vaccinium species
