@@ -33,7 +33,8 @@ Phylogeny of species in the same genus (relatively closely related species) seem
 
 Multiple sequence comparisons ([MUSCLE](https://drive5.com/muscle5/)) seems good, superior to Clustral and MAFFT for multiple sequence alignment \
 Alternativey, phylogenetic estimation usingn maximum likelihood ([PHYML](https://github.com/stephaneguindon/phyml)) seems to produce a robust tree, but might need a fossil calibration which I don't have. \
-Once alignments data is compiled, [IQTREE](http://www.iqtree.org/doc/Concordance-Factor) should be good to make a phylogenetic tree. 
+Once alignments data is compiled, [IQTREE](http://www.iqtree.org/doc/Concordance-Factor) should be good to make a phylogenetic tree. \
+Based on specific genes of interest (single copy genes for example), [ASTRAL](https://github.com/smirarab/ASTRAL) makes an accurate species tree. 
 
 ### What can I do with the Orthofinder results? 
 Species_Tree/SpeciesTree_rooted.txt provides the overall species tree inferred from the whole sets of gene tree. \
