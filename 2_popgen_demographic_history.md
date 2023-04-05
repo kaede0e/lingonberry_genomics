@@ -26,8 +26,10 @@ This computes population models similar to MSMC, but computes based on pairwise 
 For unphased genomes with lower coverage, [SMC++](https://github.com/popgenmethods/smcpp) is an option. Note that this was developed for population-level sampling and generally recommended with >20 samples. It is described to perform worse than PSMC when sample size is small. \
 The model is based on sample frequency spectrum (SFS) instead of the SMC, so if the sample size is small there is just the minimal number of haplotypes to do this (if n=1 for a diploid individual, it's a sampling freq based on just two haplotypes). That's how accurate it can get. 
 
+For computing run of homozygosity to estimate the inbreeding coefficient, [ROHan](https://github.com/grenaud/ROHan) is a useful programme Jordan recommends.
+
 
 ### signals of natural selection? ### 
 This is kind of ambitious to do with only two genomes sequencing data... but here is idea: 
 * population branch statistic (PBS) = summary statistic of pairwise FST values among three populations
-* 
+
