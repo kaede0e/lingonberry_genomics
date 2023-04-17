@@ -28,6 +28,8 @@ The model is based on sample frequency spectrum (SFS) instead of the SMC, so if 
 
 For computing runs of homozygosity to estimate the inbreeding coefficient, [ROHan](https://github.com/grenaud/ROHan) is a useful programme Jordan recommends.
 
+Justin says it's useful to check the stats on multihetsep files (https://github.com/stschiff/msmc-tools/blob/master/getStats.d) but I need to compile D to run it. - if I can't figure out he said he can get stats from my multihetsep files! 
+
 
 ### signals of natural selection? ### 
 This is kind of ambitious to do with only two genomes sequencing data... but here is idea: 
