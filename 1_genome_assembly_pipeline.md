@@ -34,6 +34,11 @@ Gene annotation on the assembly using my RNA seq ...?
 6. Convert to genomic coordinates. --> .gff3 mapped on to genome basically annotation file!
 7. Clean .gff3 column format for downstream analysis 
 8. Use orthologs to find functionalities of annotated genes in eggNOG-Mapper
+9. Filter gene hits based on criteria as follows performed with [gFACs](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6818179/) gitlab page [here](https://gitlab.com/PlantGenomicsLab/gFACs/-/blob/master/run_sample.sh): 
+- No genes should have in-frame stop codons. 
+- All genes should have both stop/stop codons. 
+- All genes should have eggNOG annotation. 
+
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
 1. Download available data (paired Illumina reads) --> SRA__.fastq 
