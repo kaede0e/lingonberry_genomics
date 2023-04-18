@@ -16,4 +16,11 @@ Example papers:
 - Another blueberry paper (Yu et al. 2019) is a good example showing flavonoid biosynthesis pathways in berries, directly highlighting the differentially expressed genes (DEGs) identified by different berry developmental stages on KEGG map (Figure 5).
 
 
+Methods (use Colle, et al. 2019 resource): 
+1. Look to see in Orthofinder if I have flavonoid biosynthesis genes categorized as orthologous in lingonberry and start from there. 
+2. If not, then get the NCBI sequences from this V. corymbosum genome and download .fasta sequences. 
+3. BLAST enzymatic genes to lingonberry genome. 
+4. Annotate those genes with obvious "genes" annotation. 
+5. Align RNAseq to the genome, try to quantify expression levels. 
+
 
