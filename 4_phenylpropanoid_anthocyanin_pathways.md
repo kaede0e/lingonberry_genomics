@@ -22,5 +22,7 @@ Methods (use Colle, et al. 2019 resource):
 3. BLAST enzymatic genes to lingonberry genome. 
 4. Annotate those genes with obvious "genes" annotation. 
 5. Align RNAseq to the genome, try to quantify expression levels. 
+6. Cui et al. used [StringTie](https://ccb.jhu.edu/software/stringtie/) to calculate the gene expression levels, and [DESeq2](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) to perform differentially expressed genes analysis - more of a statistical implications of whether to call something significalty more/less expressed. \
+DESeq2 seems to appear in other papers too so maybe I should give it a try. 
 
 
