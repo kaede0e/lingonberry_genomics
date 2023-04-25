@@ -38,6 +38,7 @@ Gene annotation on the assembly using my RNA seq ...?
 - No genes should have in-frame stop codons. 
 - All genes should have both stop/stop codons. 
 - All genes should have eggNOG annotation. 
+10. Because above gFACs filter out too many of my genes, I will skip #9 and go with the longest gene, as done by Greg's custom script, assuming the longest gene will be the most robust and likely gene hit when seuqneces are overlapping/isoforms/splicing variants. 
 
 
 Gene annotation on the assembly using published data (SRP110973; berry development transcriptome)
