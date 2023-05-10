@@ -8,13 +8,18 @@ I have:
 - Annotated genes in .fasta, .faa where the feature name corresponds to each gene
 - EggNog mapper results for orthologous genes in model organisms, labelled with KEGG, GO terms, etc. 
 - RNAseq data from different tissue types
+- Orthofinder is great at finding orthologs
+My method overview: 
+1. Run Orthofinder with tetraploid V. corymbosum Draper included. Orthofinder is run best with more genome inputs, so I chose to include V. macrocarpon Stevens, V. vitis-idaea, and Rhododendron williamsianum as the closely related outgroup. (found 174,171 genes in orthogroups, 1,403 single-copy orthogroups)
+2. On the N0.tsv, identify the orthologs in lingonberry that correspond to the blueberry enzyme. 
+3. Run HiSAT + StringTie (-A) to get gene abundance estimate - use this as a proxy for gene expression level. 
+4. Plot the FPKM by tissue type & enzyme, and map on flavonoid biosynthesis pathway. 
 
 
 Example papers: 
 - Blueberry paper (Colle, et al. 2019) is a good example showing the panel of flavonoid biosynthetic pathways in berries at different developmental stages (Figure 3). 
 - Subtropical blueberry paper (Cui et al. 2022) performed GO enrichment analysis and tissue-specific expression profiles (Figure 6). Cuticle formation pathway is highlighted for similar type of analysis (Figure 7). 
 - Another blueberry paper (Yu et al. 2019) is a good example showing flavonoid biosynthesis pathways in berries, directly highlighting the differentially expressed genes (DEGs) identified by different berry developmental stages on KEGG map (Figure 5).
-
 
 Methods (use Colle, et al. 2019 resource): 
 1. Look to see in Orthofinder if I have flavonoid biosynthesis genes categorized as orthologous in lingonberry and start from there. 
