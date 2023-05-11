@@ -53,8 +53,18 @@ Why is there a discrepancy from previous knowledge (i.e., not clustering with cr
 * Maybe the preliminary studies did not thoroughly investigate all the genes? 
 * Maybe gene duplication events for those targeted genes before had topologies different from the overall species tree? 
 
+### Build species tree based on the conserved BUSCO genes
+this would ensure that the tree pattern we're seeing in the orthofinder, as well as single-copy genes to be conserved. 
+1. Perform BUSCO on each species genome. 
+2. Extract single-copy BUSCO genes. 
+3. Align BUSCO genes individually using [MAFFT](https://mafft.cbrc.jp/alignment/software/). 
+4. Make gene tree for each using [IQ-TREE](http://www.iqtree.org/doc/Concordance-Factor#inferring-species-tree). 
+5. Remove any tips that have unreasonably long-branch using [TREESHRINK](https://github.com/uym2/TreeShrink). 
+6. Filter out gene trees with extremely high gene distance between species, as they could actually be different genes and not orthologues. Remove these cases using [DiStats](https://github.com/mptrsen/distats). 
+7. Construct species tree with [Astral III](https://github.com/smirarab/ASTRAL/blob/master/README.md). 
 
-### Flavonoid biosynthesis pathway 
-Goal here is to look for evolutionary questions regarding flavonoid biosynthesis in Vaccinium. How does lingonberry develop the red pigment colouration that is quite divergent from blueberry and bilberry? 
+
+
+
 
 
