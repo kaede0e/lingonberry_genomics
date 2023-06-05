@@ -1,0 +1,295 @@
+#!/bin/bash
+#Genome annotation with genes
+export PATH=$PATH:/home/kaedeh/scratch/Lingonberry/reference_data/RNAseq/
+module load hisat2 stringtie samtools bedtools
+
+####### Using RNAseq evidence-based only pipeline #########
+#recommended by Adam, et al. (preparing review for this but based on comparing 20+ methods)
+#RNAseq based prediction are done stepwise, then EVM can use the output .gff3 as the evidence type 'OTHER_PREDICTION'.
+#1. transcript alignment to genome
+hisat2-build ragtag_asm.fasta RedCandy_hisat2_test #took about 20min
+hisat2 \
+-q -x RedCandy_hisat2_test -1 `cat m1_list_of_files.txt` -2 `cat m2_list_of_files.txt` -S RedCandy_hisat2_test_output.sam
+#this is time and memory consuming so do it on the job!
+
+samtools sort -o sorted_hisat2_aln_output.bam hisat2_aln_output.sam
+
+#2. transcript assembly and extract fasta sequence into fasta format
+stringtie -o stringtie_output.gtf sorted_hisat2_aln_output.bam #assembles the aligned transcripts into a file with structural definitions
+#this command takes ~15 min interactive job
+#cat stringtie_output.gtf | awk '{if ($3 ~ /transcript/) {print}}' > stringtie_transcript_only_output.gtf #I'm not sure if this is necessary. 
+#bedtools getfasta -fi ragtag_asm.fasta -bed stringtie_transcript_output.gtf -fo ragtag_RedCandy_hisat2_test_transcripts.fasta
+perl ../../../../bin/EVidenceModeler-v2.0.0/EvmUtils/misc/cufflinks_gtf_to_alignment_gff3.pl stringtie_transcript_asm_output.gtf > stringtie_transcript_asm_output.gff #this misk/ perl script changes it gtf to gff3. 
+
+#3. gene prediction to assign genes to the 'exon' and 'transcript' on gtf
+##Using TransDecoder for finding coding regions from transcripts
+export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/TransDecoder/TransDecoder-TransDecoder-v5.5.0/
+export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/TransDecoder/TransDecoder-TransDecoder-v5.5.0/util/ #this is not working so you need full path to invoke scripts
+
+perl /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/TransDecoder/TransDecoder-TransDecoder-v5.5.0/util/gtf_genome_to_cdna_fasta.pl ../hisat2-stringtie/stringtie_transcript_asm_output.gtf ragtag.patch.fasta > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta
+perl /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/TransDecoder/TransDecoder-TransDecoder-v5.5.0/util/gtf_to_alignment_gff3.pl ../hisat2-stringtie/stringtie_transcript_asm_output.gtf > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.gff3
+TransDecoder.LongOrfs -S -t RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta #-S adds the "stranded" seq mode so that it doesn't mess up the orientation. 
+#this takes about ~30 min interactive job
+
+module load StdEnv/2020 gcc/9.3.0 blast+/2.13.0
+makeblastdb -in uniprot_Vaccinium_Arabidopsis_known_proteins.fasta -out uniprot_Vaccinium_Arabidopsis_known_proteins -dbtype prot
+blastp -query RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder_dir/longest_orfs.pep \
+    -db uniprot_Vaccinium_Arabidopsis_known_proteins \
+    -outfmt 6 -evalue 1e-5 -num_threads 2 -out blastp_Vaccinium_Arabidopsis_homology_based_genes.txt
+#This takes a very long time (6h+) so I should figure out how to make it into a job script of at least 24h. 
+TransDecoder.Predict -t RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta --retain_blastp_hits blastp_Vaccinium_Arabidopsis_homology_based_genes.txt
+#save the .gff3 file and make sure it is accessible to you. 
+perl /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/TransDecoder/TransDecoder-TransDecoder-v5.5.0/util/cdna_alignment_orf_to_genome_orf.pl \
+     RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.gff3 \
+     RedCandy_hisat2_stringtie_ragtag_patch_transcripts.gff3 \
+     RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.gff3
+awk -F ";Name" '{print $1}' RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.gff3 > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.clean.gff3 #cleans up the annotation file with long headline.
+
+#4. gene functional annotation using EggNOG-mapper web 
+#needs to get a protein.fasta from annotation (.gff3 mapped to genome)
+perl /project/ctb-grego/khirabayashi/bin/TransDecoder/util/gff3_file_to_bed.pl RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.clean.gff3 > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.clean.bed
+perl /project/ctb-grego/khirabayashi/bin/TransDecoder/util/gff3_file_to_proteins.pl \
+--gff3 RedCandy_hisat2_stringtie_ragtag_patch_transcripts.fasta.transdecoder.genome.clean.gff3 \
+--fasta ragtag.patch.fasta > RedCandy_hisat2_stringtie_ragtag_patch_transcripts.transdecoder.genes.faa #this protein.fasta is ready for submission to Eggnog-mapper!
+
+#5. filter all the annotated genes that have matches in EggNog, with start/stop codons, without in-frame stop codons 
+module load perl bioperl 
+cat unfiltered_genes.fasta | perl fasta2longestisoform.pl > longest_gene.fasta
+#export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/gFACs-master/
+
+#gFACs.pl -f refseq_gff \
+#-p Unique-genes-only \
+#        --statistics \
+#        --statistics-at-every-step \
+#        --unique-genes-only \
+#--fasta ../final_annotation_files/Lingonberry_RedCandy_bilberry_smartdenovo_asm_7_ragtag.scaffold.fasta \
+#        --splice-table \
+#        --canonical-only \
+#        --rem-genes-without-start-codon \
+#        --allow-alternate-starts \
+#        --rem-genes-without-stop-codon \
+#        --rem-genes-without-start-and-stop-codon \
+#        --allowed-inframe-stop-codons 0 \
+#        --nt-content \
+#        --get-fasta-with-introns \
+#        --get-fasta-without-introns \
+#        --get-protein-fasta \
+#        --create-gtf \
+#        --create-simple-gtf \
+#        --create-gff3 \
+#-O . \
+#../final_annotation_files/Lingonberry_RedCandy_genes_anno.gff3 Too stringent... 
+
+
+## Use annotated genes to count read depth and normalize = gene expression 
+
+#6. Find flavonoid biosynthesis pathway genes from UniProt hits
+#- I searched up the Colle, et al. 2019 paper's mentioend enzymes in UniProt
+#- downloaded the FASTA for most from V.corymbosum, 2 from Arabidopsis and 1 from Vitis vinifera
+#- use BLASTP to find which genes annotated in the V.corymbosum protein set is the one I'm looking for
+#- find the orthologous pair from the Orthofinder output N0.tsv. 
+
+#7. Determine expression levels of flavonoid biosynthesis pathway genes in lingonberry fruits and flowers
+#StringTie can find expression estimate, DESeq2 seems classic for performing any sort of statistical analysis on the expression levels. 
+hisat2-build $input_refgenome Lingonberry_RedCandy_hisat2_index #took about 20min
+
+#1.1 Red berry
+RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/redberry_SRR5799279_1.fastq.gz
+RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/redberry_SRR5799279_2.fastq.gz
+hisat2 \
+-q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_redberry_RNAseq_on_genome_hisat2_aln.sam
+samtools sort -o RedCandy_redberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_redberry_RNAseq_on_genome_hisat2_aln.sam
+
+#1.2 White berry
+RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/whiteberry_SRR5799277_1.fastq.gz
+RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/whiteberry_SRR5799277_2.fastq.gz
+hisat2 \
+-q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_whiteberry_RNAseq_on_genome_hisat2_aln.sam
+samtools sort -o RedCandy_whiteberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_whiteberry_RNAseq_on_genome_hisat2_aln.sam
+
+#1.3 Green berry
+RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/greenberry_SRR5799278_1.fastq.gz
+RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/greenberry_SRR5799278_2.fastq.gz
+hisat2 \
+-q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_greenberry_RNAseq_on_genome_hisat2_aln.sam
+samtools sort -o RedCandy_greenberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_greenberry_RNAseq_on_genome_hisat2_aln.sam
+
+#1.4 my berry
+RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_1_paired_trimmomatic.fastq.gz
+RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_2_paired_trimmomatic.fastq.gz
+hisat2 \
+-q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_myberry_RNAseq_on_genome_hisat2_aln.sam
+samtools sort -o RedCandy_myberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_myberry_RNAseq_on_genome_hisat2_aln.sam
+
+#1.5 Flower
+RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_1_paired_trimmomatic.fastq.gz
+RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_2_paired_trimmomatic.fastq.gz
+hisat2 \
+-q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_flower_RNAseq_on_genome_hisat2_aln.sam
+samtools sort -o RedCandy_flower_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_flower_RNAseq_on_genome_hisat2_aln.sam
+
+#1.6 lastly, perform transcription level estimate
+for files in `ls RedCandy_*_RNAseq_on_genome_hisat2_sorted.aln.bam`;
+do
+       stringtie -G /home/kaedeh/scratch/Lingonberry/output/gene_annotation_pipeline/RedCandy_annotation_2_bilberry_refgenome/final_annotation_files/Lingonberry_RedCandy_genes_anno.gff3 \
+       -A ${files}_gene_abund.tab -o ${files}_output.gtf \
+       -e $files;
+done
+#count the number of genes/transcripts expressed from .gtf files
+prepDE.py -i prepDE_input_files.txt
+cat prepDE_input_files.txt #made a text file listing paths. 
+#RedCandy_flower prepDE_input_files/RedCandy_flower_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_greenberry prepDE_input_files/RedCandy_greenberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_myberry prepDE_input_files/RedCandy_myberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_redberry prepDE_input_files/RedCandy_redberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_whiteberry prepDE_input_files/RedCandy_whiteberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_leaf prepDE_input_files/RedCandy_leaf_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+#RedCandy_root prepDE_input_files/RedCandy_root_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
+
+for enzyme in `cat enzyme_names.txt`;
+do 
+       cat transcript_count_matrix.csv | grep "`cat lingonberry_${enzyme}.txt`" > transcript_count_matrix_${enzyme}.csv;
+done #I want to make this loop work ugh. 
+
+for enzyme in `cat enzyme_names.txt`;
+do
+       cat transcript_count_matrix_${enzyme}.csv | awk -F "," '{print "$enzyme", $1,$2,$3,$4,$5,$6,$7,$8}' | sed s/' '/'       '/g | sed s/'$enzyme'/"""$enzyme"""/g > transcript_count_matrix_${enzyme}.txt;
+done
+cat transcript_count_matrix_*.txt > flavonoid_biosynthesis_transcript_count_matrix.txt
+
+#Use Gene abundance -A as a proxy for expression level using StringTie. 
+## I need to get the corresponding genes in blueberry. 
+for enzyme in `cat enzyme_names.txt`;
+do
+       cat flavonoid_enzymes_Colle2019.txt | grep "$enzyme" > stringnames_${enzyme}.txt
+done
+mkdir orthologous_strings
+for enzyme in `cat enzyme_names.txt`;
+do
+       for gene in `cat stringnames_${enzyme}.txt`;
+       do
+              cat N0.tsv | grep "$gene" > orthologous_strings/${enzyme}_${gene}.gff3
+       done
+done
+for enzyme in `cat ../enzyme_names.txt`;
+do
+       cat ${enzyme}_* > ${enzyme}_orthologs.txt
+done
+for enzyme in `cat ../enzyme_names.txt`;
+do
+       cat ${enzyme}_orthologs.txt | cut -f 7 | sed 's/\./    /2' | cut -f 1 | sort | uniq > lingonberry_${enzyme}_orthologs.txt;
+done
+
+#extract the orthologous genes in StringTie output
+#1 PAL
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.19798\|STRG.2345\|STRG.36377" | awk '{print $0 "   " "PAL"}' > RedCandy_${tissue}_RNAseq_on_genome_PAL.tab
+done
+#2 HQT
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14993" | awk '{print $0 "   " "HQT"}' > RedCandy_${tissue}_RNAseq_on_genome_HQT.tab
+done
+#3 HCT
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14980\|STRG.14993\|STRG.15008\|STRG.29314\|STRG.3188" | awk '{print $0 "   " "HCT"}' > RedCandy_${tissue}_RNAseq_on_genome_HCT.tab
+done
+#4 CoAl_4CL
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15185\|STRG.29359\|STRG.35013\|STRG.37315" | awk '{print $0 "   " "4CL"}' > RedCandy_${tissue}_RNAseq_on_genome_CoAl_4CL.tab
+done
+#5 CHS
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.11010\|STRG.25785\|STRG.4773" | awk '{print $0 "   " "CHS"}' > RedCandy_${tissue}_RNAseq_on_genome_CHS.tab
+done
+#6 CHI
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.36288" | awk '{print $0 "   " "CHI"}' > RedCandy_${tissue}_RNAseq_on_genome_CHI.tab
+done
+#7 C4H
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.19324\|STRG.37808" | awk '{print $0 "   " "C4H"}' > RedCandy_${tissue}_RNAseq_on_genome_C4H.tab
+done
+#8 C3H
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.957" | awk '{print $0 "   " "C3H"}' > RedCandy_${tissue}_RNAseq_on_genome_C3H.tab
+done
+#9 FLS
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.13136\|STRG.13258\|STRG.5589" | awk '{print $0 "   " "FLS"}' > RedCandy_${tissue}_RNAseq_on_genome_FLS.tab
+done
+#10 FHT
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15352\|STRG.25711" | awk '{print $0 "   " "FHT"}' > RedCandy_${tissue}_RNAseq_on_genome_FHT.tab
+done
+#11 UFGT
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15158\|STRG.15162\|STRG.34161\|STRG.34247" | awk '{print $0 "   " "UFGT"}' > RedCandy_${tissue}_RNAseq_on_genome_UFGT.tab
+done
+#12 TT19
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.25529\|STRG.5915" | awk '{print $0 "   " "TT19"}' > RedCandy_${tissue}_RNAseq_on_genome_TT19.tab
+done
+#13 TT12
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.12763\|STRG.24688\|STRG.34849\|STRG.5930\|STRG.7941\|STRG.9615\|STRG.9628\|STRG.9629" | awk '{print $0 "   " "TT12"}' > RedCandy_${tissue}_RNAseq_on_genome_TT12.tab
+done
+#14 OMT
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.30037\|STRG.42261" | awk '{print $0 "   " "OMT"}' > RedCandy_${tissue}_RNAseq_on_genome_OMT.tab
+done
+#15 LAR
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.33735\|STRG.6628\|STRG.9223" | awk '{print $0 "   " "LAR"}' > RedCandy_${tissue}_RNAseq_on_genome_LAR.tab
+done
+#16 F3pH
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.27277" | awk '{print $0 "   " "F3pH"}' > RedCandy_${tissue}_RNAseq_on_genome_F3pH.tab
+done
+#17 F3p5pH
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.39736\|STRG.39737" | awk '{print $0 "   " "F3pH5pH"}' > RedCandy_${tissue}_RNAseq_on_genome_F3p5pH.tab
+done
+#18 DFR
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.24785\|STRG.26863" | awk '{print $0 "   " "DFR"}' > RedCandy_${tissue}_RNAseq_on_genome_DFR.tab
+done
+#19 ANS
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.39690" | awk '{print $0 "   " "ANS"}' > RedCandy_${tissue}_RNAseq_on_genome_ANS.tab
+done
+#20 ANR
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.20771" | awk '{print $0 "   " "ANR"}' > RedCandy_${tissue}_RNAseq_on_genome_ANR.tab
+done
+
+#combine finally!
+for tissue in `cat tissue_types.txt`;
+do
+       cat RedCandy_${tissue}_RNAseq_on_genome_*.tab > RedCandy_${tissue}_RNAseq_on_genome_gene_abund.txt
+done
+
+
+
+
+
+
