@@ -1,0 +1,13 @@
+Chr	Start	End
+Chr01_Vaccinium_vitis-idaea_var_RedCandy	0	46899524
+Chr02_Vaccinium_vitis-idaea_var_RedCandy	0	55732239
+Chr03_Vaccinium_vitis-idaea_var_RedCandy	0	42352093
+Chr04_Vaccinium_vitis-idaea_var_RedCandy	0	48573227
+Chr05_Vaccinium_vitis-idaea_var_RedCandy	0	43929065
+Chr06_Vaccinium_vitis-idaea_var_RedCandy	0	47187867
+Chr07_Vaccinium_vitis-idaea_var_RedCandy	0	42979545
+Chr08_Vaccinium_vitis-idaea_var_RedCandy	0	43866791
+Chr09_Vaccinium_vitis-idaea_var_RedCandy	0	42388640
+Chr10_Vaccinium_vitis-idaea_var_RedCandy	0	40397952
+Chr11_Vaccinium_vitis-idaea_var_RedCandy	0	41428829
+Chr12_Vaccinium_vitis-idaea_var_RedCandy	0	41566430
