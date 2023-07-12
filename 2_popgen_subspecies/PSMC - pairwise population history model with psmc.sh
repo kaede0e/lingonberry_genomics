@@ -35,8 +35,9 @@ psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o ${RUN2}_diploid_5yr.psmc ${RUN2}_diploid_5
 
 #plot
 #psmc_plot.pl -p -u $MU -g $GEN -Y 60 minus_psmc_yaxis_max60 Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.aln-pe.markdup_diploid.psmc
-psmc_plot.pl -p -u $MU -g $GEN -Y 60 Lingonberry_minus_5yr_psmc ${RUN}_diploid_5yr.psmc
-psmc_plot.pl -p -u $MU -g $GEN Lingonberry_RedCandy_5yr_psmc_2 ${RUN2}_diploid_5yr.psmc
+psmc_plot.pl -R -p -u $MU -g $GEN -Y 60 Lingonberry_minus_5yr_psmc ${RUN}_diploid_5yr.psmc
+psmc_plot.pl -R -p -u $MU -g $GEN Lingonberry_RedCandy_5yr_psmc_2 ${RUN2}_diploid_5yr.psmc
+#the .txt file generated can be imported in R for plotting; 1st column = Time, 2nd column = Ne x 10^4 
 
 ###if you want 100 bootstraps... takes much longer 
 splitfa ${RUN}_diploid.psmcfa > ${RUN}_diploid.split.psmcfa
