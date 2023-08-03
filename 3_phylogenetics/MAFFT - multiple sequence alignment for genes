@@ -66,6 +66,12 @@ for busco_gene in `cat list_of_uniq_busco_genes_all.txt`;
 do
   cat */$busco_gene > single_copy_busco_genes/combined_${busco_gene}
 done
+#concatenate only those busco genes shared by all species in the dataset
+ls */header_changed_* | cut -f 2 -d "/" | sort | uniq -c | grep "11 header" | sed s/'     11 '/''/g > list_of_uniq_shared_busco_genes_all_2.txt
+for busco_gene in `cat list_of_uniq_shared_busco_genes_all_2.txt`;
+do
+  cat */$busco_gene > shared_single_copy_busco_genes_2/combined_${busco_gene}
+done
 
 #1. Align every busco gene using MAFFT
 module load mafft 
@@ -88,6 +94,17 @@ do
 done
 mv single_copy_busco_genes/*.treefile single_copy_busco_genes_trees
 cat single_copy_busco_genes_trees/*.treefile > single_copy_busco_genes_trees/combined_busco_genes.11sp.trees
+
+#2.2 for use in MEGAX, concatenate alignment files into one .meg file with header:
+#------------ text file shold have a header with --------
+#mega
+!Title busco1;
+!Format DataType=Protein indel=-;
+#--------------------------------------------------------
+module load StdEnv/2020
+module load seqkit/2.3.1
+seqkit concat iqtree_input_aln/*.faa > mega_input_aln/combined_header_changed_shared_busco_genes.aln.faa
+cat combined_header_changed_shared_busco_genes.aln.faa | sed s/'>'/'#'/g > combined_header_changed_shared_busco_genes.aln.meg #this file should be ready for MEGAX TimeTree/RelTime analysis. 
 
 #3. filter gene trees 
 tree_folder=/project/ctb-grego/khirabayashi/Lingonberry/out_busco/single_copy_busco_genes_trees
