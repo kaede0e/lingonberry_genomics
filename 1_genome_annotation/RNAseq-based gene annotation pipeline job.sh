@@ -1,11 +1,8 @@
 #!/bin/bash
 #SBATCH --time=3-00:00:00
-#SBATCH --account=rrg-gowens
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=12000M
-#SBATCH --output=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.RedCandy.gene.anno.pipeline.25May2023.out
-#SBATCH --error=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.RedCandy.gene.anno.pipeline.25May2023.err
 
 # ---------------------------------------------------------------------
 echo "Current working directory: `pwd`"
