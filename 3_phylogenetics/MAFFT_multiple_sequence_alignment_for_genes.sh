@@ -1,12 +1,8 @@
 #!/bin/bash
 #SBATCH --time=1-00:00:00
-#SBATCH --account=rrg-gowens
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=1200M
-#SBATCH --output=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.MAFFT.singlecopygenes.24Apr2023.out
-#SBATCH --error=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.MAFFT.singlecopygenes.24Apr2023.err
-
 
 ## make species tree with single-copy genes only ##
 
@@ -107,9 +103,9 @@ seqkit concat iqtree_input_aln/*.faa > mega_input_aln/combined_header_changed_sh
 cat combined_header_changed_shared_busco_genes.aln.faa | sed s/'>'/'#'/g > combined_header_changed_shared_busco_genes.aln.meg #this file should be ready for MEGAX TimeTree/RelTime analysis. 
 
 #3. filter gene trees 
-tree_folder=/project/ctb-grego/khirabayashi/Lingonberry/out_busco/single_copy_busco_genes_trees
+tree_folder=/~/out_busco/single_copy_busco_genes_trees
 module load python/3.7 r/4.2.1
-source /project/ctb-grego/khirabayashi/bin/python_env/bin/activate
+source /~/bin/python_env/bin/activate
 export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/TreeShrink
 run_treeshrink.py -t single_copy_busco_genes_trees/combined_busco_genes.11sp.trees \
 -o single_copy_busco_genes_trees/ \
@@ -117,8 +113,8 @@ run_treeshrink.py -t single_copy_busco_genes_trees/combined_busco_genes.11sp.tre
 
 #3. Astral to build species tree from individual gene trees
 module load java StdEnv/2020
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/Astral
-java -jar -Xmx25000M /project/ctb-grego/khirabayashi/bin/Astral/astral.5.7.8.jar \
+export PATH=$PATH:/~/bin/Astral
+java -jar -Xmx25000M /~/bin/Astral/astral.5.7.8.jar \
 -i combined_busco_genes.11sp.trees.treeshrink.trees \
 -o combined_busco_genes.11sp.trees.treeshrink.astral.out.tre \
 2> species_tree_astral.out.log
