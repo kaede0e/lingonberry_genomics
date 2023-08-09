@@ -1,13 +1,4 @@
 #!/bin/bash
-#SBATCH --time=6-00:00:00
-#SBATCH --account=rrg-gowens
-#SBATCH --ntasks-per-node=1
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=32
-#SBATCH --mem=0
-#SBATCH --output=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.EDTA.pipeline.27May2023.out
-#SBATCH --error=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.EDTA.pipeline.27May2023.err
-
 
 ## EDTA - Extensive De novo TE annotator pipeline m##
 
