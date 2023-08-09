@@ -2,11 +2,8 @@
 #SBATCH --time=6:00:00
 #SBATCH --mem=125G
 #SBATCH --nodes=1
-#SBATCH --account=def-gowens
 #SBATCH --gpus-per-node=1
 #SBATCH --job-name=Lingonberry_RedCandy_guppy_basecall_GPU
-#SBATCH --output=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.Basecalling.GPU.12May2022.out
-#SBATCH --error=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.Basecalling.GPU.12May2022.err
 
 #####################################
 ### Execution of programs ###########
@@ -23,7 +20,7 @@ echo ""
 
 #### Basecalling ########
 
-/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/ont-guppy/bin/guppy_basecaller \
+/~/bin/ont-guppy/bin/guppy_basecaller \
 -c dna_r9.4.1_450bps_sup.cfg \
 -i ./fast5 \
 -s ./output/guppy/Lingonberry_SREXS_01_May_05_2022 \
