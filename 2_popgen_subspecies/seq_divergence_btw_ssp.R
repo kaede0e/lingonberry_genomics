@@ -1,49 +1,9 @@
-library(tidyverse)
-library(dplyr)
-library(ggplot2)
-
-getwd()
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Lingonberry_genomics")
-
-#Computing sequence divergence between lingonberry subspecies with pairwise nucleotide alignment 
-##1 with minimap2 (SAM --> PAF --> MAF)
-##2 maffilter (remove duplicates --> calculate pairwise divergence by windows)
-
-#---------Viualize results----------------# 
 library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
 
-maffilter_output <- read.table("minimap2_Lingonberry_minus_RedCandy.maffilter.chr.aln.clean2.filt.uniq.windowed.divergence.stats.txt", header = TRUE) %>%
-  as_tibble()
-valid_maf_alignment <- read.table("minimap2_Lingonberry_minus_RedCandy_ragtag.scaff.maffilter.chr.aln.clean2.filt.uniq.above1k.maf", header = FALSE)%>% 
-  as_tibble()%>% 
-  select(V1, V2)%>%
-  rename(Start = V2) %>%
-  separate(V1, into = c("species", "Chr"))%>%
-  select(Chr, Start)%>% 
-  mutate(Chr = as.integer(Chr))%>% 
-  mutate(above1k = "yes")
-
-valid_maffilter_output <- left_join(maffilter_output, valid_maf_alignment)%>% 
-  filter(above1k == "yes")
-
-#--------------------ignore this----------------------#
-ssp_paf <- read.table("Lingonberry_minus_RedCandy_minimap2_aln_reduced.paf", header = FALSE)%>% 
-  rename(ref = V1, 
-         ref_length = V2, 
-         ref_start = V3, 
-         ref_end = V4, 
-         strand = V5, 
-         qry = V6, 
-         qry_length = V7, 
-         qry_start = V8, 
-         qry_end = V9, 
-         bp_match = V10, 
-         aln_block_length = V11, 
-         mapping_quality = V12)%>% 
-  as_tibble()
+#Computing sequence divergence between lingonberry subspecies with pairwise nucleotide alignment 
 
 #------------------ plotting ------------------------#
 
