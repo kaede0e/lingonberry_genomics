@@ -1,4 +1,9 @@
 #!/bin/bash
+#SBATCH --time=6-00:00:00
+#SBATCH --ntasks-per-node=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=0
 
 ## EDTA - Extensive De novo TE annotator pipeline m##
 
