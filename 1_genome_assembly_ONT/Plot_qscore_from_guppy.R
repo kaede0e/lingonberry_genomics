@@ -1,11 +1,6 @@
 library(tidyverse)
 library(ggplot2)
 
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Sequencing/Lingonberry_Takara_04_SREXS")
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Sequencing/Lingonberry_minus_Takara_01_SREXS")
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Sequencing/Lingonberry_minus_Takara_02_SRE")
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Sequencing/duplex_reads")
-
 qscore <- read_table("Lingonberry_minus_Takara_02_nsSRE_01_4_Dec16_2022_duplex_basecalled_stats.txt")
 qscore %>%
   ggplot()+
