@@ -2,9 +2,9 @@
 ## maffilter - statistical tools for analyzing MAF (multiple alignment file) ##
 
 # ---------------------------------------------------------------------
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/minimap2
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/minimap2/misc
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/MafFilter #stand-alone version v1.3.1
+export PATH=$PATH:/~/bin/minimap2
+export PATH=$PATH:/~/bin/minimap2/misc
+export PATH=$PATH:/~/bin/MafFilter #stand-alone version v1.3.1
 # ---------------------------------------------------------------------
 
 #For computing pairwise divergence, align two species genomes with identifier.chr# and convert to maf. 
