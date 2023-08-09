@@ -1,6 +1,6 @@
 #!/bin/bash
 #Genome annotation with genes
-export PATH=$PATH:/home/kaedeh/scratch/Lingonberry/reference_data/RNAseq/
+export PATH=$PATH:/~/reference_data/RNAseq/
 module load hisat2 stringtie samtools bedtools
 
 ## Use annotated genes to count read depth and normalize = gene expression 
@@ -16,36 +16,36 @@ module load hisat2 stringtie samtools bedtools
 hisat2-build $input_refgenome Lingonberry_RedCandy_hisat2_index #took about 20min
 
 #1.1 Red berry
-RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/redberry_SRR5799279_1.fastq.gz
-RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/redberry_SRR5799279_2.fastq.gz
+RNAseq_m1_list_of_files=/~/raw_fastq_files/redberry_SRR5799279_1.fastq.gz
+RNAseq_m2_list_of_files=/~/raw_fastq_files/redberry_SRR5799279_2.fastq.gz
 hisat2 \
 -q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_redberry_RNAseq_on_genome_hisat2_aln.sam
 samtools sort -o RedCandy_redberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_redberry_RNAseq_on_genome_hisat2_aln.sam
 
 #1.2 White berry
-RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/whiteberry_SRR5799277_1.fastq.gz
-RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/whiteberry_SRR5799277_2.fastq.gz
+RNAseq_m1_list_of_files=/~/raw_fastq_files/whiteberry_SRR5799277_1.fastq.gz
+RNAseq_m2_list_of_files=/~/raw_fastq_files/whiteberry_SRR5799277_2.fastq.gz
 hisat2 \
 -q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_whiteberry_RNAseq_on_genome_hisat2_aln.sam
 samtools sort -o RedCandy_whiteberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_whiteberry_RNAseq_on_genome_hisat2_aln.sam
 
 #1.3 Green berry
-RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/greenberry_SRR5799278_1.fastq.gz
-RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/greenberry_SRR5799278_2.fastq.gz
+RNAseq_m1_list_of_files=/~/raw_fastq_files/greenberry_SRR5799278_1.fastq.gz
+RNAseq_m2_list_of_files=/~/raw_fastq_files/greenberry_SRR5799278_2.fastq.gz
 hisat2 \
 -q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_greenberry_RNAseq_on_genome_hisat2_aln.sam
 samtools sort -o RedCandy_greenberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_greenberry_RNAseq_on_genome_hisat2_aln.sam
 
 #1.4 my berry
-RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_1_paired_trimmomatic.fastq.gz
-RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_2_paired_trimmomatic.fastq.gz
+RNAseq_m1_list_of_files=/~/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_1_paired_trimmomatic.fastq.gz
+RNAseq_m2_list_of_files=/~/raw_fastq_files/Lingonberry_RedCandy_berry_F123133_2_paired_trimmomatic.fastq.gz
 hisat2 \
 -q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_myberry_RNAseq_on_genome_hisat2_aln.sam
 samtools sort -o RedCandy_myberry_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_myberry_RNAseq_on_genome_hisat2_aln.sam
 
 #1.5 Flower
-RNAseq_m1_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_1_paired_trimmomatic.fastq.gz
-RNAseq_m2_list_of_files=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_2_paired_trimmomatic.fastq.gz
+RNAseq_m1_list_of_files=/~/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_1_paired_trimmomatic.fastq.gz
+RNAseq_m2_list_of_files=/~/raw_fastq_files/Lingonberry_RedCandy_flower_F123132_2_paired_trimmomatic.fastq.gz
 hisat2 \
 -q -x Lingonberry_RedCandy_hisat2_index -1 `echo $RNAseq_m1_list_of_files` -2 `echo $RNAseq_m2_list_of_files` -S RedCandy_flower_RNAseq_on_genome_hisat2_aln.sam
 samtools sort -o RedCandy_flower_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy_flower_RNAseq_on_genome_hisat2_aln.sam
@@ -53,31 +53,10 @@ samtools sort -o RedCandy_flower_RNAseq_on_genome_hisat2_sorted.aln.bam RedCandy
 #1.6 lastly, perform transcription level estimate
 for files in `ls RedCandy_*_RNAseq_on_genome_hisat2_sorted.aln.bam`;
 do
-       stringtie -G /home/kaedeh/scratch/Lingonberry/output/gene_annotation_pipeline/RedCandy_annotation_2_bilberry_refgenome/final_annotation_files/Lingonberry_RedCandy_genes_anno.gff3 \
+       stringtie -G /~/output/gene_annotation_pipeline/~/Lingonberry_RedCandy_genes_anno.gff3 \
        -A ${files}_gene_abund.tab -o ${files}_output.gtf \
        -e $files;
 done
-#count the number of genes/transcripts expressed from .gtf files
-prepDE.py -i prepDE_input_files.txt
-cat prepDE_input_files.txt #made a text file listing paths. 
-#RedCandy_flower prepDE_input_files/RedCandy_flower_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_greenberry prepDE_input_files/RedCandy_greenberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_myberry prepDE_input_files/RedCandy_myberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_redberry prepDE_input_files/RedCandy_redberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_whiteberry prepDE_input_files/RedCandy_whiteberry_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_leaf prepDE_input_files/RedCandy_leaf_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-#RedCandy_root prepDE_input_files/RedCandy_root_RNAseq_on_genome_hisat2_sorted.aln.bam_output.gtf
-
-for enzyme in `cat enzyme_names.txt`;
-do 
-       cat transcript_count_matrix.csv | grep "`cat lingonberry_${enzyme}.txt`" > transcript_count_matrix_${enzyme}.csv;
-done #I want to make this loop work ugh. 
-
-for enzyme in `cat enzyme_names.txt`;
-do
-       cat transcript_count_matrix_${enzyme}.csv | awk -F "," '{print "$enzyme", $1,$2,$3,$4,$5,$6,$7,$8}' | sed s/' '/'       '/g | sed s/'$enzyme'/"""$enzyme"""/g > transcript_count_matrix_${enzyme}.txt;
-done
-cat transcript_count_matrix_*.txt > flavonoid_biosynthesis_transcript_count_matrix.txt
 
 #Use Gene abundance -A as a proxy for expression level using StringTie. 
 ## I need to get the corresponding genes in blueberry. 
