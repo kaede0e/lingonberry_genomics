@@ -1,75 +1,61 @@
 #!/bin/bash
-#Quality check of basecalled MinION data
-
-#From guppy output: sequencing_summary.txt file
-for file in `ls`;
-do
-  less -S $file | cut -f 14-15 > ${file}_basecalled_reads_stats.txt
-done
-
-#From guppy-duplex output: sequencing_summary.txt file
-for file in `ls *duplex_by_guppy*`;
-do
-  less -S $file | cut -f 15-16 > ${file}_basecalled_reads_stats.txt
-done
-
-#Quality check of Illumina reads using fastqc
+#Quality check and adapter trimming of Illumina reads using fastqc
 module load fastqc/0.11.9
 fastqc --noextract --nogroup -o ../output/fastqc/ *.fastq #huh, it looks like the raw outputs pass all fastqc?
 
 #Adapter trimming and clipping for Illumina paired-end reads with trimmomatic
 #DNA reads from both subspecies:
 #the raw data looks like they pass the QC on fastqc no problem without trimming
-java -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -jar ~/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE Lingonberry_RedCandy_F122990_1_150bp_4_lanes.merge_chastity_passed.fastq.gz Lingonberry_RedCandy_F122990_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_F122990_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_F122990_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_F122990_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_F122990_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_Illumina_trimmomatic_output.log -summary Lingonberry_RedCandy_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 #extra reads (April 19th)
-java -jar -Xmx250g /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -jar -Xmx250g ~/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE F122990_1_150bp_4and5_lanes.merge_chastity_passed.fastq.gz F122990_2_150bp_4and5_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_F122990.2_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_F122990.2_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_F122990.2_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_F122990.2_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_Illumina_trimmomatic_output2.log -summary Lingonberry_RedCandy_Illumina_trimmomatic_output2_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 
 
-java -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -jar ~/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE Lingonberry_minus_F122991_1_150bp_4_lanes.merge_chastity_passed.fastq.gz Lingonberry_minus_F122991_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_minus_F122991_1_paired_trimmomatic.fastq.gz Lingonberry_minus_F122991_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_minus_F122991_2_paired_trimmomatic.fastq.gz Lingonberry_minus_F122991_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_minus_Illumina_trimmomatic_output.log -summary Lingonberry_minus_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 
 
 #cDNA reads from RNAseq data, Illumina paired-end reads 
 #F123130 - Leaf
-java -Xmx150g -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -Xmx150g -jar ~/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE F123130_1_150bp_4_lanes.merge_chastity_passed.fastq.gz F123130_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_leaf_F123130_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_leaf_F123130_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_leaf_F123130_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_leaf_F123130_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_leaf_Illumina_trimmomatic_output.log -summary Lingonberry_RedCandy_leaf_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 #F123131 - Root
-java -Xmx150g -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -Xmx150g -jar ~/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE F123131_1_150bp_4_lanes.merge_chastity_passed.fastq.gz F123131_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_root_F123131_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_root_F123131_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_root_F123131_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_root_F123131_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_root_Illumina_trimmomatic_output.log -summary Lingonberry_RedCandy_root_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 #F123132 - Flower
-java -Xmx150g -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -Xmx150g -jar ~/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE F123132_1_150bp_4_lanes.merge_chastity_passed.fastq.gz F123132_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_flower_F123132_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_flower_F123132_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_flower_F123132_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_flower_F123132_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_flower_Illumina_trimmomatic_output.log -summary Lingonberry_RedCandy_flower_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 #F123133 - Berry
-java -Xmx150g -jar /project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
+java -Xmx150g -jar ~/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar \
 PE F123133_1_150bp_4_lanes.merge_chastity_passed.fastq.gz F123133_2_150bp_4_lanes.merge_chastity_passed.fastq.gz \
 Lingonberry_RedCandy_berry_F123133_1_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_berry_F123133_1_unpaired_trimmomatic.fastq.gz \
 Lingonberry_RedCandy_berry_F123133_2_paired_trimmomatic.fastq.gz Lingonberry_RedCandy_berry_F123133_2_unpaired_trimmomatic.fastq.gz \
 -trimlog Lingonberry_RedCandy_berry_Illumina_trimmomatic_output.log -summary Lingonberry_RedCandy_berry_Illumina_trimmomatic_output_stats.txt \
-ILLUMINACLIP:/project/ctb-grego/khirabayashi/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
+ILLUMINACLIP:~/bin/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True SLIDINGWINDOW:4:15 LEADING:3 TRAILING:3 MINLEN:36
 
