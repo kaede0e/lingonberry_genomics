@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH --time=14-00:00:00
 #SBATCH --mem=192000M
-#SBATCH --account=rrg-gowens
 #SBATCH --cpus-per-task=48
 
 #Assembly with SmartDenovo
@@ -18,22 +17,19 @@ echo "SLURM_JOBID: " $SLURM_JOBID
 # ---------------------------------------------------------------------
 echo ""
 
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/smartdenovo/
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/smartdenovo/smartdenovo/
+export PATH=$PATH:/~/bin
+export PATH=$PATH:/~/bin/smartdenovo/
+export PATH=$PATH:/~/bin/smartdenovo/smartdenovo/
 
 #All in one-go
 smartdenovo.pl \
--c 1 -t 20 -p Lingonberry_RedCandy_smartdenovo_asm_1 /project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_RedCandy_all_reads.fastq.gz > Lingonberry_RedCandy_smartdenovo_asm_1.mak
+-c 1 -t 20 -p Lingonberry_RedCandy_smartdenovo_asm_1 /~/Lingonberry_RedCandy_all_reads.fastq.gz > Lingonberry_RedCandy_smartdenovo_asm_1.mak
 make -f Lingonberry_RedCandy_smartdenovo_asm_1.mak #you have to call this 'make file' from //bin/smartdenovo/
 
 smartdenovo.pl \
--c 1 -t 50 -p Lingonberry_RedCandy_canu_corrected_smartdenovo_asm_1 /project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_RedCandy_canu_correction.trimmedReads.fasta.gz > Lingonberry_RedCandy_canu_corrected_smartdenovo_asm_1.mak
+-c 1 -t 50 -p Lingonberry_RedCandy_canu_corrected_smartdenovo_asm_1 /~/Lingonberry_RedCandy_canu_correction.trimmedReads.fasta.gz > Lingonberry_RedCandy_canu_corrected_smartdenovo_asm_1.mak
 make -f Lingonberry_RedCandy_canu_corrected_smartdenovo_asm_1.mak #you have to call this 'make file' from //bin/smartdenovo/
 
-smartdenovo.pl \
--c 1 -t 40 -p Lingonberry_minus_smartdenovo_asm_1 /project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_minus_all_reads.fastq.gz > Lingonberry_minus_smartdenovo_asm_1.mak
-make -f Lingonberry_minus_smartdenovo_asm_1.mak #you have to call this 'make file' from //bin/smartdenovo/
 
 # ---------------------------------------------------------------------
 echo "Done assembly with smartdenovo."
