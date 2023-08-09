@@ -2,9 +2,6 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 
-getwd()
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Lingonberry_genomics/popgen_results")
-
 #Troubleshooting my popgen simulation - is it inbreeding?
 
 LC1_allele_freq <- read.table("Lingonberry_RedCandy.vcf.allele.frq.filtered.bed", header = FALSE) %>%
