@@ -2,11 +2,8 @@
 #SBATCH --time=48:00:00
 #SBATCH --mem=125G
 #SBATCH --nodes=1
-#SBATCH --account=def-gowens
 #SBATCH --gpus-per-node=1
 #SBATCH --job-name=Lingonberry_RedCandy_guppy_basecall_duplex_GPU
-#SBATCH --output=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.Basecalling.guppy_duplex.GPU.13Oct2022_SREXS03_2.out
-#SBATCH --error=/home/kaedeh/scratch/Lingonberry/log_file/Lingonberry.Basecalling.guppy_duplex.GPU.13Oct2022_SREXS03_2.err
 
 #####################################
 ### Execution of programs ###########
@@ -22,9 +19,9 @@ echo ""
 ## Post-sequencing process with Nanopore reads (duplex mode for R10.4)
 
 module load gcc python/3.10 parasail
-source /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/python_env/bin/activate
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/ont-guppy/bin
+source /~/bin/python_env/bin/activate
+export PATH=$PATH:/~/bin
+export PATH=$PATH:/~/bin/ont-guppy/bin
 module load cuda/11.7
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/extras/CUPTI/lib64/
 
@@ -34,7 +31,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/extras/CUPTI/lib64/
 
 ### 1. guppy runs 'fast' mode, find duplex pairs, do duplex basecalling for those.
 guppy_duplex \
--i /home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/raw_fast5_files/Lingonberry_RedCandy_SREXS_R10.4_3_Oct8_2022_fast5 \
+-i /~/raw_fast5_files/Lingonberry_RedCandy_SREXS_R10.4_3_Oct8_2022_fast5 \
 -s ./output/guppy/Lingonberry_RedCandy_Takara_04_SREXS_03_Oct_8_2022_duplex_by_guppy \
 --duplex_chunks_per_runner 240 #\
 #--call_non_duplex_reads
@@ -48,7 +45,7 @@ echo "Duplex basecalled reads are found in output/guppy/*duplex_by_guppy/final/d
 for file in `cat MinION_run_names.txt`;
 do
   ### 2. remove duplex reads from 'sup' mode reads (do the singleplex basecalled fastq.gz file at once)
-  zcat /home/kaedeh/scratch/Lingonberry/output/guppy/${file}/pass/* | perl /home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/scripts/filter_fastq.pl /home/kaedeh/scratch/Lingonberry/output/guppy/${file}_duplex_by_guppy/final_pairs.txt > ${file}_duplexfiltered.sup.fastq
+  zcat /~/output/guppy/${file}/pass/* | perl /~/scripts/filter_fastq.pl /~/output/guppy/${file}_duplex_by_guppy/final_pairs.txt > ${file}_duplexfiltered.sup.fastq
   gzip ${file}_duplexfiltered.sup.fastq
 
   # ---------------------------------------------------------------------
@@ -57,10 +54,10 @@ do
 
   ### 3. combine duplex reads with 'sup' simplex reads into a single fastq.gz
   cat ${file}_duplexfiltered.sup.fastq.gz ./output/guppy/${file}_duplex_by_guppy/final/duplex/pass/*.fastq.gz > ${file}_duplex_basecalled.fastq.gz
-  cp ${file}_duplex_basecalled.fastq.gz /home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/output/sequencing_guppy/
+  cp ${file}_duplex_basecalled.fastq.gz /~/output/sequencing_guppy/
 
   # ---------------------------------------------------------------------
-  echo "Duplex reads + simplex 'sup' reads combined to SEQ_ID.duplex_basecalled.fastq.gz in projects/rrg-gowens/Lintongerry/output/sequencing_guppy/"
+  echo "Duplex reads + simplex 'sup' reads combined to SEQ_ID.duplex_basecalled.fastq.gz in /~/output/sequencing_guppy/"
   # ---------------------------------------------------------------------
 done
 
