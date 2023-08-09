@@ -2,8 +2,6 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(scales)
-getwd()
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Lingonberry_genomics")
 
 #--Github MSMC2 examples with human dataset------------------------------
 mu <- 1.25e-8
