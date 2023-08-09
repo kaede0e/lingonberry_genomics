@@ -2,15 +2,15 @@
 ## PSMC - pairwise sequentially Markovian coalescent model ##
 
 # ---------------------------------------------------------------------
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/psmc/utils
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/psmc
+export PATH=$PATH:/~/bin/psmc/utils
+export PATH=$PATH:/~/bin/psmc
 # ---------------------------------------------------------------------
 
 module load samtools bcftools
 
 #psmc from: https://github.com/lh3/psmc    easy to compile without permissions 
-genome=/project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/scaffolding/Lingonberry_minus_asm_7.ragtag.scaffold.chr.fasta
-bamdir=/project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/markdups
+genome=/~/scaffolding/Lingonberry_minus_asm_7.ragtag.scaffold.chr.fasta
+bamdir=/~/markdups
 
 #bam prefix as positional argument eg for SAMPLE1.bam: sbatch -J SAMPLE1 PSMC.sh SAMPLE1  
 RUN=Lingonberry_minus_asm_7.ragtag.scaffold.aln-pe.markdup
