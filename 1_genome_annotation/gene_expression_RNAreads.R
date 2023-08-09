@@ -6,9 +6,6 @@ library(dplyr)
 library(ggplot2)
 
 
-getwd()
-setwd("/Users/hirabayashikaede/Documents/UVic/Masters/Lingonberry data/Lingonberry_genomics")
-
 lingonberry_flavonoid_exp <- read.table("flavonoid_biosynthesis_transcript_count_matrix.txt", header = FALSE)%>%
   as.tibble()%>% 
   rename(enzyme = V1, 
