@@ -4,16 +4,16 @@
 # ---------------------------------------------------------------------
 module load StdEnv/2020 gcc/9.3.0 gsl msmc2/2.1.3
 module load python scipy-stack r 
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/msmc-tools
+export PATH=$PATH:/~/bin/msmc-tools
 
 #0.1 Align Illumina pe reads to my ref reference assembly (I can do this in rcs.uvic.ca)
 #MUST ALIGN BOTH SPECIES TO THE SAME REFERENCE GENOME (chose ssp. minus for better assembly quality)
 module load pilon samtools bwa
 input_refgenome=Lingonberry_minus_asm_7.ragtag.scaffold
-minus_Illumina_1=/project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_minus_F122991_1_paired_trimmomatic.fastq.gz
-minus_Illumina_2=/project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_minus_F122991_2_paired_trimmomatic.fastq.gz
-RedCandy_Illumina_1=/project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_RedCandy_F122990_1.2_paired_trimmomatic.fastq.gz
-RedCandy_Illumina_2=/project/ctb-grego/khirabayashi/Lingonberry/Lingonberry_RedCandy_F122990_2.2_paired_trimmomatic.fastq.gz
+minus_Illumina_1=/~/Lingonberry_minus_F122991_1_paired_trimmomatic.fastq.gz
+minus_Illumina_2=/~/Lingonberry_minus_F122991_2_paired_trimmomatic.fastq.gz
+RedCandy_Illumina_1=/~/Lingonberry_RedCandy_F122990_1.2_paired_trimmomatic.fastq.gz
+RedCandy_Illumina_2=/~/Lingonberry_RedCandy_F122990_2.2_paired_trimmomatic.fastq.gz
 
 bwa index ${input_refgenome}.fasta
 bwa mem -t 40 ${input_refgenome}.fasta $minus_Illumina_1 $minus_Illumina_2 > ${input_refgenome}.aln-pe.sam
@@ -47,10 +47,9 @@ samtools depth -a ${input_refgenome}.aln-pe.markdup.bam | awk '{c++;s+=$3}END{pr
 #minus: 35.327
 samtools depth -a ${input_refgenome}.RedCandy_aln-pe.markdup.2.bam | awk '{c++;s+=$3}END{print s/c}'
 #RedCandy: 37.3833
-
-#I can't do this in rcs.uvic.ca so I had to transfer files over to cedar... 
+ 
 #1. Make a VCF and mask file per sample/population for each chromosome. 
-#do this in Cedar
+
 for chr in `cat Lingonberry_master_inputs_scaff/Lingonberry_minus_ragtag.scaffold.chrnames.txt`;
 do
   bcftools mpileup -q 20 -Q 20 -C 50 -Ou -r $chr -f Lingonberry_master_inputs_scaff/${input_refgenome}.chr.fasta Lingonberry_master_inputs_scaff/${input_refgenome}.aln-pe.markdup.bam | bcftools call -c -V indels |
@@ -63,69 +62,19 @@ do
   bamCaller.py 37 Lingonberry_master_inputs_scaff/Lingonberry_minus_F122990.2_paired_reads_RedCandy_${chr}.mask.bed.gz | gzip -c > Lingonberry_master_inputs_scaff/Lingonberry_minus_F122990.2_paired_reads_RedCandy_${chr}.vcf.gz;
 done
 
-# ---------------------------------------------------------------------
-Job ID: 2804115
-Cluster: cedar
-User/Group: kaedeh/kaedeh
-State: COMPLETED (exit code 0)
-Nodes: 1
-Cores per node: 4
-CPU Utilized: 06:46:03
-CPU Efficiency: 46.65% of 14:30:28 core-walltime
-Job Wall-clock time: 03:37:37
-Memory Utilized: 95.34 MB
-Memory Efficiency: 0.40% of 23.44 GB
-# ---------------------------------------------------------------------
-
-
 #2. Make a mask file for each species/population's genome using GenMap. 
-#do this in rcs.uvic.ca
-export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/genmap-build/bin
+export PATH=$PATH:/~/bin/genmap-build/bin
 
-genmap index -F /project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/scaffolding/${input_refgenome}.chr.fasta -I genmap_index_minus
-genmap index -F /project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_RedCandy_sup_model_duplexed_all_reads_combined/scaffolding/Lingonberry_RedCandy_bilberry_smartdenovo_asm_7_ragtag.scaffold.chr.fasta -I genmap_index_RedCandy_bilberry_refgenome
+genmap index -F /~/scaffolding/${input_refgenome}.chr.fasta -I genmap_index_minus
 
 genmap map -K 30 -E 2 -I genmap_index_minus/ -O genmap_map_minus_output -t -w -bg -T 30 -v &> genmap_map_minus.log
 cat genmap_map_minus_output.bedgraph | perl filter_mappability_bed.pl > excluded_regions.bed #this is regions to exclude because of repetitiveness. Score zero on the genmap.
 cat genmap_map_minus_output.bedgraph | perl filter_mappability_nonrepetitive_bed.pl > included_regions.bed #this is regions to include for non-repetitive. Score >0 on the genmap.
-genmap map -K 30 -E 2 -I genmap_index_RedCandy_bilberry_refgenome/ -O genmap_map_RedCandy_bilberry_refgenome_output -t -w -bg -T 30 -v &> genmap_map_Redcandy_bilberry_refgenome.log
-cat genmap_out | perl filter_mappability_bed.pl > excluded_regions.bed #243708242 bp
 
-#3. Combine the two populations in to prepare inputs for MSMC2. 
-#MASTERVARDIR=/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/msmc-tools/MSMC-tutorial-files/cg_data
+#3. Variant calling for MSMC2 inputs. 
 
-#generate_multihetsep.py --chr 1 \
-#--mask test_output/NA12878.chr1.mask.bed.gz --mask test_output/NA19240.chr1.mask.bed.gz \
-#--mask hs37d5_chr1.mask.bed \
-#test_output/NA12878.chr1.vcf.gz test_output/NA19240.chr1.vcf.gz > test_output/NA12878_NA19240.chr1.multihetsep.txt
-
-# ---------------------------------------------------------------------
-### this is unnecessary ###
-#OUTDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_minus_outputs
-#INDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_minus_inputs
-
-#for chr in `cat Lingonberry_ragtag.scaffold.chrnames.txt`;
-#do
-#	generate_multihetsep.py --chr $chr \
-#	--mask $INDIR/Lingonberry_minus_canu_smartdenovo_asm_7_ragtag_F122991_paired_reads_${chr}.mask.bed.gz \
-#    --mask $INDIR/Lingonberry_minus_excluded_regions.mask.bed \
-#    $INDIR/Lingonberry_minus_canu_smartdenovo_asm_7_ragtag_F122991_paired_reads_${chr}.vcf.gz > $OUTDIR/Lingonberry_minus_canu_smartdenovo_asm_7_ragtag_F122991_paired_reads_${chr}.multihetsep.txt
-#done
-
-#INDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_RedCandy_inputs
-#OUTDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_RedCandy_outputs
-
-#for chr in `cat Lingonberry_ragtag.scaffold.chrnames.txt`;
-#do
-#	generate_multihetsep.py --chr $chr \
-#	--mask $INDIR/Lingonberry_RedCandy_smartdenovo_asm_7_ragtag_F122990_paired_reads_${chr}.mask.bed.gz \
-#    --mask $INDIR/Lingonberry_RedCandy_excluded_regions.mask.bed \
-#    $INDIR/Lingonberry_RedCandy_smartdenovo_asm_7_ragtag_F122990_paired_reads_${chr}.vcf.gz > $OUTDIR/Lingonberry_RedCandy_smartdenovo_asm_7_ragtag_F122990_paired_reads_${chr}.multihetsep.txt
-#done
-# ---------------------------------------------------------------------
-
-OUTDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_master_outputs_scaff
-INDIR=/home/kaedeh/scratch/Lingonberry/output/msmc2/Lingonberry_master_inputs_scaff
+OUTDIR=/~/output/msmc2/Lingonberry_master_outputs_scaff
+INDIR=/~/output/msmc2/Lingonberry_master_inputs_scaff
 chrnames_prefix=_Vaccinium_vitis-idaea_ssp_minus
 
 for chr in `cat Lingonberry_minus_ragtag.scaffold.chrnames.txt`;
@@ -139,9 +88,6 @@ do
 done
 
 #4. Single population - effective population size estimate with MSMC2. 
-#msmc2 -t 1 -p 1*2+15*1+1*2 -o test_output/NA12878.chr1.msmc2 -I 0,1 test_output/NA12878_NA19240.chr1.multihetsep.txt
-#msmc2 -t 1 -p 1*2+15*1+1*2 -o test_output/NA19240.chr1.msmc2 -I 2,3 test_output/NA12878_NA19240.chr1.multihetsep.txt
-
 msmc2 -t 1 -p 1*2+16*1+1*2 -o $OUTDIR/Lingonberry_minus.msmc2 -I 0,1 \
 $OUTDIR/Lingonberry_minus_RedCandy_Chr01${chrnames_prefix}.multihetsep.txt \
 $OUTDIR/Lingonberry_minus_RedCandy_Chr02${chrnames_prefix}.multihetsep.txt \
@@ -191,27 +137,17 @@ $OUTDIR/Lingonberry_minus_RedCandy_Chr12${chrnames_prefix}.multihetsep.txt
 combineCrossCoal.py $OUTDIR/Lingonberry_minus_RedCandy.msmc2.final.txt $OUTDIR/Lingonberry_minus.msmc2.final.txt \
     $OUTDIR/Lingonberry_RedCandy.msmc2.final.txt > $OUTDIR/Lingonberry_minus_RedCandy.msmc2.combined.msmc2.final.txt
 
-# ---------------------------------------------------------------------
-Job ID: 2830955
-Cluster: cedar
-User/Group: kaedeh/kaedeh
-State: COMPLETED (exit code 0)
-Nodes: 1
-Cores per node: 4
-CPU Utilized: 00:57:13
-CPU Efficiency: 36.14% of 02:38:20 core-walltime
-Job Wall-clock time: 00:39:35
-Memory Utilized: 3.26 GB
-Memory Efficiency: 13.90% of 23.44 GB
-# ---------------------------------------------------------------------
-
 #7. Estimate of homozygosity/heterozygosity to check if what I'm seeing is real. 
 #filter variant calls (.vcf) with mask files 
 module load vcftools
 INDIR=raw_msmc_output
-genmap_directory=/project/ctb-grego/khirabayashi/Lingonberry/out_genmap_mappabilitymask/genmap_results_minus
+genmap_directory=/~/out_genmap_mappabilitymask/genmap_results_minus
+
+# ---------------------------------------------------------------------
+## Check the variant calling file. 
 
 #1.get allele freq from unfiltered vcf
+
 #2.extract filtered allele freq (mapped coverage + repetitive regions)
 for i in {1..9}; 
 do
@@ -287,12 +223,11 @@ done
 cat Lingonberry_minus_*callable_sites.mapped.filtered.bed > Lingonberry_minus.callable_sites.mapped.filtered.bed
 cat Lingonberry_RedCandy_*callable_sites.mapped.filtered.bed > Lingonberry_RedCandy.callable_sites.mapped.filtered.bed
 
-
-#Use ROHan to compute run of homozygosity and inbreeding coefficient?
+#4. Use ROHan to compute run of homozygosity and inbreeding coefficient?
 export PATH=$PATH:/project/ctb-grego/khirabayashi/bin/rohan/bin/
-refgenome=/project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/markdups/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.fasta
-minus_BAM=/project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/markdups/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.aln-pe.markdup.bam
-RedCandy_BAM=/project/ctb-grego/khirabayashi/Lingonberry/out_Lingonberry_minus_sup_model_duplexed_all_reads_combined/markdups/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.RedCandy_aln-pe.markdup.2.bam
+refgenome=/~/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.fasta
+minus_BAM=/~/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.aln-pe.markdup.bam
+RedCandy_BAM=/~/Lingonberry_minus_bilberry_canu_smartdenovo_asm_7_ragtag.scaffold.RedCandy_aln-pe.markdup.2.bam
 
 rohan -t 25 --tstv 1.71 --rohmu 2e-5 -o Lingonberry_minus_ROHan $refgenome $minus_BAM
 rohan -t 25 --tstv 1.69 --rohmu 2e-5 -o Lingonberry_RedCandy_ROHan $refgenome $RedCandy_BAM
