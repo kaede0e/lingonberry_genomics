@@ -160,12 +160,95 @@ lingonberry_flavonoid_exp_lev %>% #5x10 pixel on PDF landscape
   xlab("Enzyme")+ ylab("")
   facet_grid(rows = vars(enzyme))
 
-lingonberry_flavonoid_exp_lev %>% #10x13 PDF portrait
-    mutate(enzyme_gene = paste0(enzyme_f,"_",Gene_ID)) %>%
-    mutate(log_FPKM = log10(FPKM))%>% 
-    ggplot()+
-    geom_tile(aes(x=sample_f, y=enzyme_gene, fill=log_FPKM))+
-    scale_fill_gradientn(colours =c("#FFFFFF","#ffe8e8","#d24140"))+
-    theme_classic()+
-    xlab("")+ ylab("")
+#make individually z-scaled dataframe and combine (Supplementary Figure 
+norm_4CL <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "4CL") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_ANS <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "ANS") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_ANR <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "ANR") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_C3H <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "C3H") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_C4H <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "C4H") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_CHI <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "CHI") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_CHS <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "CHS") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_DFR <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "DFR") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_F3pH <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "F3pH") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_F3pH5pH <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "F3pH5pH") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_FHT <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "FHT") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_FLS <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "FLS") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_HCT <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "HCT") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_HQT <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "HQT") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_LAR <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "LAR") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_OMT <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "OMT") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_PAL <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "PAL") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_TT12 <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "TT12") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_TT19 <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "TT19") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_UFGT <- lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  mutate(enzyme_gene = paste0(enzyme,"_",Gene_ID)) %>% filter(enzyme == "UFGT") %>% 
+  mutate(log_FPKM = log10(FPKM))%>% 
+  mutate(z_FPKM = scale(FPKM)) %>% select(sample, enzyme_gene, enzyme, FPKM, z_FPKM)
+norm_lingonberry_flavonoid_exp_lev_no_zeros<- rbind(norm_4CL, norm_ANR, norm_ANS, norm_C3H, norm_C4H, norm_CHI, norm_CHS, norm_DFR, norm_F3pH, norm_F3pH5pH, norm_FHT, norm_FLS, norm_HCT,  norm_HQT, norm_LAR, norm_OMT, norm_PAL, norm_TT12, norm_TT19, norm_UFGT)
+
+norm_lingonberry_flavonoid_exp_lev_no_zeros$sample_f = factor(norm_lingonberry_flavonoid_exp_lev_no_zeros$sample, levels=c('RedCandy_rhizome','RedCandy_leaf','RedCandy_flower','RedCandy_berry', 'Sunna_greenberry', 'Sunna_whiteberry', 'Sunna_redberry'))
+norm_lingonberry_flavonoid_exp_lev_no_zeros %>% #10x13 PDF portrait
+  ggplot()+
+  geom_tile(aes(x=sample_f, y=enzyme_gene, fill=z_FPKM))+
+  scale_fill_gradientn(colours =c("#FFFFFF","#d24140"))+
+  theme_classic()+
+  xlab("")+ ylab("")
+
     
