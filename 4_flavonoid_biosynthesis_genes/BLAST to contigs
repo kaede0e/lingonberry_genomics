@@ -1,0 +1,95 @@
+#!/bin/bash
+###### BLAST centromeric repeats from a reference genome to your contigs #########
+
+module load bedtools
+module load samtools
+module load StdEnv/2020 gcc/9.3.0 blast+/2.12.0 #centromeric repeats
+module load StdEnv/2020 gcc/9.3.0 blast+/2.14.0 #GST
+
+centromeric_repeats=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/reference_data/V_corymbosum_Draper_v1.0_centromeric_regions.fa
+GST_gene=poplar_glutathione_transferase_genes.fa
+RedCandy_genome_scaffold=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/output/scaffold/Lingonberry_RedCandy_asm_7.2.ragtag.scaffold.fasta
+RedCandy_genome_contig=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/output/assembly/Lingonberry_RedCandy_asm_7.2_purge_haplotig_curated.fasta
+RedCandy_proteins=/home/kaedeh/scratch/Lingonberry/output/V_vitis-idaea_ssp.vitis-idaea_var.RedCandy_genome_assembly/Vvitis-idaea_ssp_vitis-idaea_var_RedCandy_genome_proteins.faa
+
+makeblastdb -in $centromeric_repeats -dbtype nucl
+blastn -query $RedCandy_genome_scaffold -db $centromeric_repeats -out RedCandy_centromeric_repeats_blast.txt -outfmt 6
+makeblastdb -in $GST_gene -dbtype nucl
+blastn -query $RedCandy_genome_contig -db blueberry_GST_genes.fasta -out RedCandy_GST_nucl_blast.txt -outfmt 6
+
+Vcorymbosum_anno_proteins=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/reference_data/V_corymbosum_Draper_v1.0-proteins-nameTruncated.fasta
+makeblastdb -in glutathione_transferase.faa -out glutathione_transferase -dbtype prot
+blastp -query $Vcorymbosum_anno_proteins -db glutathione_transferase -out glutathione_transferase_gene_blastp_V_corymbosum_Draper_v1.0.txt
+makeblastdb -in V_corymbosum_Draper_v1.0_flavonoid_proteins.fasta -dbtype prot
+blastp -query $RedCandy_proteins -db V_corymbosum_Draper_v1.0_flavonoid_proteins.fasta -out RedCandy_Vcorymbosum_flavonoid_genes_prot_blast.txt -outfmt 6
+blastp -query $RedCandy_proteins -db V_corymbosum_Draper_v1.0_flavonoid_proteins.fasta -out RedCandy_Vcorymbosum_flavonoid_genes_prot_blast.txt #saves all alighments and full output
+
+#from the output file, I chose the sequences with >95% alignment score and >220/233 alignment length 
+cat glutathione_transferase_gene_blastp_V_corymbosum_Draper_v1.0.txt | awk '{if ($4>=200){print}}' | awk '{if ($3>=90){print}}' > glutathione_transferase_gene_blastp_top_hits_V_corymbosum_Draper_v1.0.txt
+
+mkdir orthologous_strings_GST_N1
+for enzyme in `cat enzyme_names_GST.txt`;
+do
+       for gene in `cat stringnames_${enzyme}.txt`;
+       do
+              cat N1.tsv | grep "$gene" > orthologous_strings_GST_N1/${enzyme}_${gene}.gff3
+       done
+done
+for enzyme in `cat ../enzyme_names_GST.txt`;
+do
+       cat ${enzyme}_* > ${enzyme}_orthologs.txt
+done
+for enzyme in `cat ../enzyme_names_GST.txt`;
+do
+       cat ${enzyme}_orthologs.txt | cut -f 7 | sed 's/\./    /2' | cut -f 1 | sort | uniq > lingonberry_${enzyme}_orthologs.txt;
+done
+
+#This didn't find any orthologous genes in lingonberry annotation... even though there are orthologs in all the otehr species I've included. 
+
+##BUT, nucleoblast found hits on our contigs, which did not get placed to chromosomes. 
+#For this I downloaded GST gene in nucleotides.fasta from NCBI Genebank 
+makeblastdb -in blueberry_GST_genes.fasta -dbtype nucl
+blastn -query $RedCandy_genome_contig -db blueberry_GST_genes.fasta -out RedCandy_GST_nucl_blast.txt -outfmt 6
+
+
+
+######## Troubleshooting ######## 
+#1 Why is the same 'gene' in lingonberry orthologous to HQT and HCT?
+
+#1.1. are they in the same orthogroup
+N0.HOG0000481   OG0000228       n7      KAE9462570.1, KAE9462530.1, KAE9462568.1, KAE9462562.1  
+VaccDscaff39-processed-gene-44.7-mRNA-1 (HCT), VaccDscaff6-augustus-gene-402.29-mRNA-1 (HCT), 
+VaccDscaff413-augustus-gene-0.24-mRNA-1 (HCT)), VaccDscaff38-processed-gene-2.16-mRNA-1 (HCT), 
+VaccDscaff11-augustus-gene-106.20-mRNA-1 (HCT), VaccDscaff24-augustus-gene-299.21-mRNA-1 (HCT), 
+VaccDscaff24-processed-gene-278.6-mRNA-1 (HCT), VaccDscaff15-processed-gene-101.5-mRNA-1 (HCT), 
+VaccDscaff39-augustus-gene-44.31-mRNA-1 (HQT), VaccDscaff38-augustus-gene-2.42-mRNA-1 (HCT), 
+VaccDscaff39-augustus-gene-43.31-mRNA-1 (HQT)    vmacro03946-RA_Vaccinium_macrocarpon_Stevens_v1, vmacro16786-RA_Vaccinium_macrocarpon_Stevens_v1      
+STRG.14993.1.p1, STRG.14983.1.p1, STRG.14996.1.p1
+
+#1.2 ok. that means two of the lingonberry HQT and HCT genes are in the same orthorgoup. 
+# --> choose the better alignment ones in our results
+
+
+#2. Is GST (glutathione transferase) in our assembly? 
+#2.1 It is in utg682_pilon_pilon_pilon, but it's scattered and a gap of 1266bp exists. 
+#BLASTn result (blueberry GST is 701 bp)
+utg682_pilon_pilon_pilon        KT601064.1      96.570  379     11      2       420953  421330  311     688     0.0     630
+utg682_pilon_pilon_pilon        KT601064.1      97.819  321     7       0       419367  419687  1       321     2.98e-161    562
+utg682_pilon_pilon_pilon        KT601064.1      76.046  263     55      7       494244  494502  321     63      2.14e-33     137
+utg682_pilon_pilon_pilon        KT601064.1      75.740  169     34      5       457743  457909  230     67      2.83e-17     84.2
+
+#this contig was mapped to Chr02 in our scaffolds. 
+Chr02_Vaccinium_vitis-idaea_var_RedCandy        36407784        37359655        89      W       utg682_pilon_pilon_pilon        1951872   +
+
+#2.2 Is it in our annotation? 
+#Yes, but only the second portion is recognized in CDS: 
+Chr02_Vaccinium_vitis-idaea_var_RedCandy        transdecoder    CDS     419524  419631  .       -       0       ID=cds.STRG.3821.X #this is 107bp only
+#On my gene annotation file, what I see is: 
+Chr02_Vaccinium_vitis-idaea_var_RedCandy        transdecoder    gene    418589  427533  .       -       .       ID=STRG.3821 #This is 8,900+ bp long
+STRG.3821.4.p1 STRG.3821   Chr02_Vaccinium_vitis-idaea_var_RedCandy:419524-427413(-) #which is 7000bp+ long so didn't get recognized in protein sequence? 
+
+
+
+
+
+
