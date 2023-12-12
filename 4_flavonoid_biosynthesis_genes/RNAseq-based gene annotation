@@ -1,6 +1,6 @@
 #!/bin/bash
 #Genome annotation with genes
-export PATH=$PATH:/home/kaedeh/scratch/Lingonberry/reference_data/RNAseq/
+export PATH=$PATH:/~/reference_data/RNAseq/
 module load hisat2 stringtie samtools bedtools
 
 ####### Using RNAseq evidence-based only pipeline #########
