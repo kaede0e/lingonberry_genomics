@@ -81,6 +81,7 @@ do
        cat ${enzyme}_orthologs.txt | cut -f 7 | sed 's/\./    /2' | cut -f 1 | sort | uniq > lingonberry_${enzyme}_orthologs.txt;
 done
 
+
 #extract the orthologous genes in StringTie output
 #1 PAL
 for tissue in `cat tissue_types.txt`;
@@ -90,22 +91,22 @@ done
 #2 HQT
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14993" | awk '{print $0 "   " "HQT"}' > RedCandy_${tissue}_RNAseq_on_genome_HQT.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14993\|STRG.14996" | awk '{print $0 "   " "HQT"}' > RedCandy_${tissue}_RNAseq_on_genome_HQT.tab
 done
 #3 HCT
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14980\|STRG.14993\|STRG.15008\|STRG.29314\|STRG.3188" | awk '{print $0 "   " "HCT"}' > RedCandy_${tissue}_RNAseq_on_genome_HCT.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.14980\|STRG.14993\|STRG.14996\|STRG.15009\|STRG.15013\|STRG.29314\|STRG.3188" | awk '{print $0 "   " "HCT"}' > RedCandy_${tissue}_RNAseq_on_genome_HCT.tab
 done
 #4 CoAl_4CL
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15185\|STRG.29359\|STRG.35013\|STRG.37315" | awk '{print $0 "   " "4CL"}' > RedCandy_${tissue}_RNAseq_on_genome_CoAl_4CL.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15185\|STRG.29359" | awk '{print $0 "   " "4CL"}' > RedCandy_${tissue}_RNAseq_on_genome_CoAl_4CL.tab
 done
 #5 CHS
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.11010\|STRG.25785\|STRG.4773" | awk '{print $0 "   " "CHS"}' > RedCandy_${tissue}_RNAseq_on_genome_CHS.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.11010\|STRG.25785\|STRG.4773\|STRG.6030\|STRG.6031" | awk '{print $0 "   " "CHS"}' > RedCandy_${tissue}_RNAseq_on_genome_CHS.tab
 done
 #6 CHI
 for tissue in `cat tissue_types.txt`;
@@ -115,17 +116,17 @@ done
 #7 C4H
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.19324\|STRG.37808" | awk '{print $0 "   " "C4H"}' > RedCandy_${tissue}_RNAseq_on_genome_C4H.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.19324" | awk '{print $0 "   " "C4H"}' > RedCandy_${tissue}_RNAseq_on_genome_C4H.tab
 done
 #8 C3H
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.957" | awk '{print $0 "   " "C3H"}' > RedCandy_${tissue}_RNAseq_on_genome_C3H.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.957\|STRG.14981" | awk '{print $0 "   " "C3H"}' > RedCandy_${tissue}_RNAseq_on_genome_C3H.tab
 done
 #9 FLS
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.13136\|STRG.13258\|STRG.5589" | awk '{print $0 "   " "FLS"}' > RedCandy_${tissue}_RNAseq_on_genome_FLS.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.20701\|STRG.5589\|STRG.13136\|STRG.13258" | awk '{print $0 "   " "FLS"}' > RedCandy_${tissue}_RNAseq_on_genome_FLS.tab
 done
 #10 FHT
 for tissue in `cat tissue_types.txt`;
@@ -135,27 +136,27 @@ done
 #11 UFGT
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15158\|STRG.15162\|STRG.34161\|STRG.34247" | awk '{print $0 "   " "UFGT"}' > RedCandy_${tissue}_RNAseq_on_genome_UFGT.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.15158\|STRG.15162\|STRG.31622\|STRG.34249\|STRG.41819" | awk '{print $0 "   " "UFGT"}' > RedCandy_${tissue}_RNAseq_on_genome_UFGT.tab
 done
 #12 TT19
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.25529\|STRG.5915" | awk '{print $0 "   " "TT19"}' > RedCandy_${tissue}_RNAseq_on_genome_TT19.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.25529\|STRG.5915\|STRG.15311" | awk '{print $0 "   " "TT19"}' > RedCandy_${tissue}_RNAseq_on_genome_TT19.tab
 done
 #13 TT12
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.12763\|STRG.24688\|STRG.34849\|STRG.5930\|STRG.7941\|STRG.9615\|STRG.9628\|STRG.9629" | awk '{print $0 "   " "TT12"}' > RedCandy_${tissue}_RNAseq_on_genome_TT12.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.12763\|STRG.21368\|STRG.24688\|STRG.34849\|STRG.5930\|STRG.7941\|STRG.9629\|STRG.9630" | awk '{print $0 "   " "TT12"}' > RedCandy_${tissue}_RNAseq_on_genome_TT12.tab
 done
 #14 OMT
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.30037\|STRG.42261" | awk '{print $0 "   " "OMT"}' > RedCandy_${tissue}_RNAseq_on_genome_OMT.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.30037\|STRG.42261\|STRG.28075" | awk '{print $0 "   " "OMT"}' > RedCandy_${tissue}_RNAseq_on_genome_OMT.tab
 done
 #15 LAR
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.33735\|STRG.6628\|STRG.9223" | awk '{print $0 "   " "LAR"}' > RedCandy_${tissue}_RNAseq_on_genome_LAR.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.6628" | awk '{print $0 "   " "LAR"}' > RedCandy_${tissue}_RNAseq_on_genome_LAR.tab
 done
 #16 F3pH
 for tissue in `cat tissue_types.txt`;
@@ -165,12 +166,12 @@ done
 #17 F3p5pH
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.39736\|STRG.39737" | awk '{print $0 "   " "F3pH5pH"}' > RedCandy_${tissue}_RNAseq_on_genome_F3p5pH.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.39736\|STRG.39737\|STRG.39731\|STRG.39734" | awk '{print $0 "   " "F3p5pH"}' > RedCandy_${tissue}_RNAseq_on_genome_F3p5pH.tab
 done
 #18 DFR
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.24785\|STRG.26863" | awk '{print $0 "   " "DFR"}' > RedCandy_${tissue}_RNAseq_on_genome_DFR.tab
+       cat RedCandy_${tissue}_RNAseq_on_genome_hisat2_sorted.aln.bam_gene_abund.tab | grep -i -w "STRG.24785\|STRG.26865" | awk '{print $0 "   " "DFR"}' > RedCandy_${tissue}_RNAseq_on_genome_DFR.tab
 done
 #19 ANS
 for tissue in `cat tissue_types.txt`;
@@ -186,9 +187,16 @@ done
 #combine finally!
 for tissue in `cat tissue_types.txt`;
 do
-       cat RedCandy_${tissue}_RNAseq_on_genome_*.tab > RedCandy_${tissue}_RNAseq_on_genome_gene_abund.txt
+       cat intermediate_files_rev/RedCandy_${tissue}_RNAseq_on_genome_*.tab > RedCandy_${tissue}_RNAseq_on_genome_gene_abund.txt
 done
 
+#Get the length of each blueberry phenolics biosynthesis gene 
+blueberry_gene=/home/kaedeh/projects/rrg-gowens/kaedeh/Lingonberry/reference_data/V_corymbosum_Draper_v1.0-proteins-nameTruncated.fasta
+mkdir blueberry_orthologs
+for gene in `cat flavonoid_enzymes_Colle2019_gene_names.txt`; 
+do
+       cat V_corymbosum_Draper_v1.0-proteins-nameTruncated.fasta.fai | grep "$gene" | cut -f 1-2 > blueberry_orthologs/${gene}_gene.fai ; 
+done
 
 
 
