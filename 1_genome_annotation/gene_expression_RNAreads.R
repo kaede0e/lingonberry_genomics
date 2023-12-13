@@ -188,7 +188,7 @@ filtered_gene_hits <- blastp_align_comb %>%
   distinct() %>% 
   separate(V1, into = c("Gene_ID"), sep = ".1.p1", 
            convert = TRUE, remove = TRUE) #and I manually trimmed the non-1.p1 genes
-## Those are the only genes we should consider including lingonberry gene expression analysis!!
+## Those are the only genes we should consider including in gene expression analysis!!
 
 
 #----------------------------------
