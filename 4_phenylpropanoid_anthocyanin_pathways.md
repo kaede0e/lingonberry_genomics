@@ -1,6 +1,5 @@
 ## 4. Anthocyanin production and phenylpropanoid pathway in lingonberry
-As the last part of my thesis, it would be nice to highlight the presence of important enzymatic pathways in anthocyanin biosynthesis (phenylpropanoid pathway, flavonoid pathway) in berries. \
-My goal is then to show the presence of those genes in my assembly, hopefully quantify them in different tissue types (various berry and flower development stages).
+My goal here is to show the presence of genes involved in phenolic compound biosynthesis pathway in my assembly, and quantify them in different tissue types (various berry and flower development stages).
 
 How do you do it? 
 I have: 
