@@ -7,7 +7,7 @@ I have:
 - Annotated genes in .fasta, .faa where the feature name corresponds to each gene
 - EggNog mapper results for orthologous genes in model organisms, labelled with KEGG, GO terms, etc. 
 - RNAseq data from different tissue types
-- Orthofinder is great at finding orthologs \
+- Orthofinder is great at finding orthologs
 
 My method overview: 
 1. Run Orthofinder with tetraploid V. corymbosum Draper included. Orthofinder is run best with more genome inputs, so I chose to include V. macrocarpon Stevens, V. vitis-idaea, and Rhododendron williamsianum as the closely related outgroup. (found 174,171 genes in orthogroups, 1,403 single-copy orthogroups)
