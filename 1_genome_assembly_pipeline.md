@@ -53,23 +53,3 @@ Gene annotation on the assembly using published data (SRP110973; berry developme
 
 
 
-
-
-
-#-------- misk -----------#
-Alternative option is [BRAKER pipeline](https://github.com/Gaius-Augustus/BRAKER) but probably better off with must RNAseq evidence-based approach.
-1. Map RNAseq to genome --> .bam
-2. Sort the bam file by read names (samtools -sort) --> sorted.bam
-3. Run BRAKER pipeline
-  1. GeneMark-ES will use unsupervised gene prediction based on RNAseq mapped onto genome (based on eukaryotic coding genes features)
-  2. Train AUGUSTUS based on GeneMark-ES gene prediction
-  3. AUGUSTUS performs ab initio gene prediction
-4. At the end of BRAKER, it produces genes annotated to the genome (?) --> .gff3?
-5. 
-
-Because I am having trouble installing BRAKER, alternative pipeline is [EVidenceModeler](https://github.com/EVidenceModeler/EVidenceModeler/wiki) which was actually what was used in Cui et al. 2022 V. darrowii paper and also Greg's colleague's sunflower genome annotation. 
-
-
-Useful protein search resources (used in corporation with the BlastP search: [uniProt](https://www.uniprot.org/uniprotkb?facets=model_organism%3A3702&query=arabidopsis), it has Arabidopsis 136,000+ genes and 1,200+ Vaccinium genes). \
-I downloaded them and created the blastdb. 
-
