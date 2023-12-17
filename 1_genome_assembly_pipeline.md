@@ -11,7 +11,7 @@ Data download from GenomeBC \
 Cean reads: Trim adapters and unpaired reads from Illumina short-read raw outputs ([Trimmomatic](https://github.com/usadellab/Trimmomatic)) \
 Quality check with fastqc
 
-### de novo assenble ###
+### de novo assemble ###
 Assemble draft genome (smartdenovo) --> asm.fa \
 Correct reads and assemble draft genome (canu_smartdenovo) --> asm.fa \
 Polish the draft assembly with Nanopore long-reads x3 (Nextpolish) \
